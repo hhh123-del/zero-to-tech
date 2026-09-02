@@ -11,6 +11,8 @@ import InputCard from "./InputCard.jsx";
 import ResultCard from "./ResultCard.jsx";
 import { textLab } from "../data/site.js";
 
+const API = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export default function TextLabView() {
   const [result, setResult] = useState(null);
 
@@ -21,7 +23,7 @@ export default function TextLabView() {
         <PageHeading title={textLab.heroTitle} subtitle={textLab.heroSubtitle} />
       </article>
 
-      <InputCard onResult={setResult} />
+      <InputCard onResult={setResult} apiUrl={`${API}/api/analyze`}/>
       <ResultCard result={result} />
     </AnimatedCardGrid>
   );

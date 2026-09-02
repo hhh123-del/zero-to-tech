@@ -24,7 +24,8 @@ export default function HomeView() {
         if (!res.ok) {
           throw new Error(`主页数据加载失败：${res.status}`);
         }
-        setData(await res.json());
+        //setData(await res.json());
+        setData(structuredClone(home));
       } catch (error) {
         console.error(error);
       }
@@ -41,15 +42,62 @@ export default function HomeView() {
       </article>
 
       <article className="panel panel-full featured-work-panel card">
-        <p className="section-kicker">{data.featuredWork.kicker}</p>
-        <p className="featured-title">{data.featuredWork.title}</p>
-        <p className="featured-copy">{data.featuredWork.copy}</p>
-        <Link className="featured-link" href="/text-lab">
-          <span className="featured-link-label">{data.featuredWork.linkLabel}</span>
+        <p className="section-kicker">{data.featuredWork.kicker}</p >
+        <div className="work-two-col">
+          <div className="panel card">
+            <p className="section-kicker">{data.featuredWork.kicker}</p >
+            <p className="featured-title">{data.featuredWork.title}</p >
+            <p className="featured-copy">{data.featuredWork.copy}</p >
+            <Link className="featured-link" href={data.featuredWork.href}>
+              <span className="featured-link-label">{data.featuredWork.linkLabel}</span>
+              <span className="arrow">›</span>
+            </Link>
+          </div>
+          <div className="panel card">
+            <p className="section-kicker">{data.secondWork.kicker}</p >
+            <p className="featured-title">{data.secondWork.title}</p >
+            <p className="featured-copy">{data.secondWork.copy}</p >
+            <Link className="featured-link" href={data.secondWork.href}>
+              <span className="featured-link-label">{data.secondWork.linkLabel}</span>
+              <span className="arrow">›</span>
+            </Link>
+          </div>
+        </div>
+      </article>
+
+      {/* ========== 数据分析项目模块 ========== */}
+      <article className="panel panel-full card">
+        <p className="section-kicker">{data.rfmProject.kicker}</p >
+        <h3 className="block-title">{data.rfmProject.title}</h3>
+        <p className="block-text">{data.rfmProject.copy}</p >
+        <a className="featured-link" href={data.rfmProject.href} target="_blank" rel="noopener noreferrer">
+          <span className="featured-link-label">{data.rfmProject.linkLabel}</span>
+          <span className="arrow">&gt;</span>
+        </a >
+      </article>
+      
+      {/* ========== 技术复盘模块 ========== */}
+      <article className="panel panel-full card">
+        <p className="section-kicker">{data.techReview.kicker}</p >
+        <h3 className="block-title">{data.techReview.title}</h3>
+        <div className="block-text">
+          {data.techReview.points.map((item, i) => (
+            <p key={i}>• {item}</p >
+          ))}
+        </div>
+        <Link className="featured-link" href={data.techReview.href}>
+          <span className="featured-link-label">{data.techReview.linkLabel}</span>
           <span className="arrow">›</span>
         </Link>
       </article>
-
+      
+      {/* ========== 学习笔记模块 ========== */}
+      <article className="panel panel-full card">
+        <p className="section-kicker">{data.noteBlock.kicker}</p >
+        <p className="block-text">{data.noteBlock.copy}</p >
+      </article>
+            
+      
       <article className="panel panel-full identity-panel card">
         <div className="identity-item">
           <p className="section-kicker">座右铭</p>

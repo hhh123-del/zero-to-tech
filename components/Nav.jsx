@@ -14,6 +14,7 @@ export default function Nav() {
   const items = [
     { href: "/",         label: "个人主页" },
     { href: "/text-lab", label: "文字实验室" },
+    { href: "/sql-agent-lab", label: "SQL-Agent实验室" },
   ];
 
   return (

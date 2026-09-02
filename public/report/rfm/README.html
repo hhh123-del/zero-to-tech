@@ -1,0 +1,915 @@
+<!DOCTYPE html><html><head>
+      <title>README</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\DELL\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.30\crossnote\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-details{margin:0;padding:0;border:none}.markdown-preview .md-toc summary.md-toc-link-wrapper{cursor:pointer;list-style-position:outside}.markdown-preview .md-toc summary.md-toc-link-wrapper::marker{font-size:.85em}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='0']{margin-left:12px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='1']{margin-left:28px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='2']{margin-left:44px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='3']{margin-left:60px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='4']{margin-left:76px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='5']{margin-left:80px}.markdown-preview a.tag,.markdown-preview a.tag:active,.markdown-preview a.tag:link,.markdown-preview a.tag:visited,.markdown-preview span.tag:not(.token){display:inline-block;background-color:var(--vscode-badge-background,rgba(127,127,127,.18));color:var(--vscode-badge-foreground,currentColor);border-radius:2em;font-size:.85em;font-weight:500;padding:.05em .55em;line-height:1.5;white-space:nowrap;text-decoration:none;text-shadow:none;box-shadow:none;transition:background-color .12s ease,opacity .12s ease}.markdown-preview a.tag{cursor:pointer}.markdown-preview a.tag:focus,.markdown-preview a.tag:hover{background-color:var(--vscode-badge-background,rgba(127,127,127,.32));color:var(--vscode-badge-foreground,currentColor);opacity:.85;text-decoration:none;outline:0}.markdown-preview .wikilink-embed-content{border-left:3px solid var(--vscode-textBlockQuote-border,rgba(128,128,128,.3));background:var(--vscode-textBlockQuote-background,rgba(128,128,128,.05));margin:.5em 0;padding:.5em .75em;border-radius:0 3px 3px 0}.markdown-preview .wikilink-embed-content.wikilink-embed-error{border-left-color:var(--vscode-errorForeground,#cf222e);color:var(--vscode-errorForeground,#cf222e);font-style:italic;opacity:.8}.markdown-preview .wikilink-embed-content h1:first-child,.markdown-preview .wikilink-embed-content h2:first-child,.markdown-preview .wikilink-embed-content h3:first-child,.markdown-preview .wikilink-embed-content h4:first-child,.markdown-preview .wikilink-embed-content h5:first-child,.markdown-preview .wikilink-embed-content h6:first-child{margin-top:.25em}.markdown-preview .wikilink-embed-content .wikilink-embed-content{margin:.25em 0;padding:.25em .5em}.markdown-preview .block-id{display:none}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:var(--vscode-scrollbarSlider-background,rgba(150,150,150,.66));border:4px solid var(--vscode-scrollbarSlider-background,rgba(150,150,150,.66));background-clip:content-box}.scrollbar-style::-webkit-scrollbar-thumb:hover{background-color:var(--vscode-scrollbarSlider-hoverBackground,rgba(120,120,120,.66))}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:var(--vscode-scrollbarSlider-background,rgba(150,150,150,.66));border:4px solid var(--vscode-scrollbarSlider-background,rgba(150,150,150,.66));background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb:hover{background-color:var(--vscode-scrollbarSlider-hoverBackground,rgba(120,120,120,.66))}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-details{margin:0;padding:0;border:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='0']{padding-left:0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='1']{padding-left:16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='2']{padding-left:32px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='3']{padding-left:48px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='4']{padding-left:64px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='5']{padding-left:80px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. -->
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script>
+    </head>
+    <body for="html-export">
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="rfm-rfi-用户价值分层与-roi-优化">RFM-RFI 用户价值分层与 ROI 优化 </h1>
+<blockquote>
+<p>从传统 RFM 到多维 RFI 的升级：不只关注用户「花了多少」，更要看清用户「想不想买、为什么没买」。</p>
+</blockquote>
+<hr>
+<h2 id="-项目概述">📋 项目概述 </h2>
+<p>本项目基于 <strong>1000 名用户</strong> 的电商行为数据，构建了一套改良版的 <strong>RFM-RFI 用户价值分层模型</strong>。</p>
+<p>传统 RFM（Recency / Frequency / Monetary）模型只看历史消费，忽略了「逛」与「互动」的行为信号。本项目在其基础上创新性地引入 <strong>意向度（Satisfaction）、转化摩擦系数（Friction）、活跃忠诚度（Loyalty）、购买力背景（Income Level）、兴趣匹配度（Interest Match）</strong> 五维指标，将用户细分为 <strong>15 类精细化画像</strong>，并通过对「传统 RFM 策略」与「优化 RFI 策略」的 <strong>ROI 边际测算</strong>，验证了改良模型在预算效率和投入产出比上的显著优势。</p>
+<hr>
+<h2 id="-核心结论tldr">🎯 核心结论（TL;DR） </h2>
+<table>
+<thead>
+<tr>
+<th>对比维度</th>
+<th style="text-align:center">传统 RFM 策略</th>
+<th style="text-align:center">优化 RFI 策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目标用户数</td>
+<td style="text-align:center">200 人</td>
+<td style="text-align:center">159 人</td>
+</tr>
+<tr>
+<td>实际成本</td>
+<td style="text-align:center">2,000 元</td>
+<td style="text-align:center">1,590 元</td>
+</tr>
+<tr>
+<td>预算使用率</td>
+<td style="text-align:center">20.0%</td>
+<td style="text-align:center"><strong>15.9%</strong></td>
+</tr>
+<tr>
+<td>边际收益（增量）</td>
+<td style="text-align:center">2,081 元</td>
+<td style="text-align:center"><strong>2,123 元</strong></td>
+</tr>
+<tr>
+<td>边际 ROI</td>
+<td style="text-align:center">4.0%</td>
+<td style="text-align:center"><strong>33.5%</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>✅ 优化 RFI 策略在边际收益基本持平的前提下，<strong>仅用 15.9% 的预算就实现了 33.5% 的边际 ROI</strong>，单位预算的投入产出效率是传统 RFM 的 <strong>8 倍以上</strong>（33.5% / 4.0% ≈ 8.4 倍）。</p>
+</blockquote>
+<hr>
+<h2 id="-数据概览">📊 数据概览 </h2>
+<h3 id="字段说明按业务逻辑分为三类">字段说明（按业务逻辑分为三类） </h3>
+<table>
+<thead>
+<tr>
+<th>字段分类</th>
+<th>字段名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>基本信息</strong>（是谁）</td>
+<td>User_ID, Age, Gender, Location, Income, Interests</td>
+<td>用户 ID、年龄、性别、地域、收入、兴趣</td>
+</tr>
+<tr>
+<td><strong>行为特征</strong>（逛啥）</td>
+<td>Last_Login_Days_Ago, Time_Spent_on_Site_Minutes, Pages_Viewed, Newsletter_Subscription</td>
+<td>距上次登录天数、网站停留时长、浏览页数、是否订阅邮件</td>
+</tr>
+<tr>
+<td><strong>消费特征</strong>（花啥）</td>
+<td>Purchase_Frequency, Average_Order_Value, Total_Spending, Product_Category_Preference</td>
+<td>购买频率、平均订单价值、总消费金额、品类偏好</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>数据规模：<strong>1000 条 × 15 列</strong>（含 1 列冗余索引 <code>Unnamed: 0</code>，实际特征 14 列），经 <code>drop_duplicates</code> 检查无重复值、<code>info()</code> 检查无缺失值</li>
+<li>数值特征（Age / Income / 消费 / 行为字段）经 <code>describe()</code> 描述统计检查无异常值</li>
+</ul>
+<h3 id="数值特征描述统计">数值特征描述统计 </h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th style="text-align:center">均值</th>
+<th style="text-align:center">中位数</th>
+<th style="text-align:center">最小值</th>
+<th style="text-align:center">最大值</th>
+<th style="text-align:center">众数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Age</td>
+<td style="text-align:center">40.99</td>
+<td style="text-align:center">42</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">64</td>
+<td style="text-align:center">43</td>
+</tr>
+<tr>
+<td>Income</td>
+<td style="text-align:center">81,305</td>
+<td style="text-align:center">81,042</td>
+<td style="text-align:center">20,155</td>
+<td style="text-align:center">149,951</td>
+<td style="text-align:center">35,379</td>
+</tr>
+<tr>
+<td>Last_Login_Days_Ago</td>
+<td style="text-align:center">15.59</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">29</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td>Purchase_Frequency</td>
+<td style="text-align:center">4.63</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td>Average_Order_Value</td>
+<td style="text-align:center">104.04</td>
+<td style="text-align:center">105</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">199</td>
+<td style="text-align:center">83</td>
+</tr>
+<tr>
+<td>Total_Spending</td>
+<td style="text-align:center">2,552.96</td>
+<td style="text-align:center">2,542</td>
+<td style="text-align:center">112</td>
+<td style="text-align:center">4,999</td>
+<td style="text-align:center">1,047</td>
+</tr>
+<tr>
+<td>Time_Spent_on_Site_Minutes</td>
+<td style="text-align:center">297.36</td>
+<td style="text-align:center">292.5</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">599</td>
+<td style="text-align:center">417</td>
+</tr>
+<tr>
+<td>Pages_Viewed</td>
+<td style="text-align:center">24.40</td>
+<td style="text-align:center">24.5</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">49</td>
+<td style="text-align:center">29</td>
+</tr>
+</tbody>
+</table>
+<h3 id="分类特征分布检验">分类特征分布检验 </h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>分布</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gender</td>
+<td>Male 526（52.6%），Female 474（47.4%）——性别均衡</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>Suburban 349（34.9%），Urban 344（34.4%），Rural 307（30.7%）</td>
+</tr>
+<tr>
+<td>Interests</td>
+<td>Sports 213，Fashion 209，Travel 196，Food 196，Technology 186</td>
+</tr>
+<tr>
+<td>Product_Category_Preference</td>
+<td>Apparel 218，Electronics 209，Books 198，Home &amp; Kitchen 189，Health &amp; Beauty 186</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-分析流程">🔄 分析流程 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>数据加载与预处理
+      │
+      ▼
+第一阶段 用户属性分析（是谁）
+      │   ① 性别 ② 年龄 ③ 年龄×消费 ④ 地域 ⑤ 兴趣×品类偏好
+      ▼
+第二阶段 用户活跃度分析（逛啥）
+      │   ① 活跃度分布 ② 订阅 vs 非订阅 ③ 浏览与购买相关性
+      ▼
+第三阶段 改良 RFM → RFI 指标构建（五维新指标）
+      │   ① 意向度 ② 摩擦系数 ③ 忠诚度 ④ 收入层级 ⑤ 兴趣匹配
+      ▼
+第四阶段 RFM-Satisfaction 综合评分 + 用户分层画像（15 类）
+      │
+      ▼
+第五阶段 ROI 边际测算（传统 RFM vs 优化 RFI）
+      │
+      ▼
+第六阶段 业务结论与运营策略
+</code></pre><hr>
+<h2 id="第一阶段数据加载与预处理">第一阶段：数据加载与预处理 </h2>
+<ol>
+<li><strong>加载数据</strong>：<code>pd.read_csv()</code> 读取 <code>user_personalized_features.csv</code></li>
+<li><strong>质量检查</strong>：<code>df.shape</code> 确认规模（1000, 15）；<code>df.info()</code> 确认各字段非空、类型正确</li>
+<li><strong>去重</strong>：<code>df.drop_duplicates()</code> 删除重复记录</li>
+<li><strong>数值异常检查</strong>：<code>df.describe()</code> 结合众数，确认 Age、Income、消费与行为字段均处于合理区间</li>
+<li><strong>分类分布检验</strong>：<code>value_counts()</code> 检查性别、地域、兴趣、品类偏好四类字段的取值分布是否合理（见上表）</li>
+</ol>
+<hr>
+<h2 id="第二阶段用户属性分析是谁">第二阶段：用户属性分析（是谁） </h2>
+<h3 id="1-性别分布">① 性别分布 </h3>
+<p>男女比例接近 1:1（Male 526 / Female 474），用户群体性别均衡、无偏差。</p>
+<p><img src="gender_dist.png" alt="用户性别分布"></p>
+<h3 id="2-年龄分层">② 年龄分层 </h3>
+<p>按人生阶段（毕业→结婚→养娃→退休）对年龄分箱：</p>
+<table>
+<thead>
+<tr>
+<th>年龄段</th>
+<th style="text-align:center">用户数</th>
+<th style="text-align:center">占比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>18 岁以下</td>
+<td style="text-align:center">25</td>
+<td style="text-align:center">2.5%</td>
+</tr>
+<tr>
+<td>18-25 岁</td>
+<td style="text-align:center">152</td>
+<td style="text-align:center">15.2%</td>
+</tr>
+<tr>
+<td>26-35 岁</td>
+<td style="text-align:center">212</td>
+<td style="text-align:center">21.2%</td>
+</tr>
+<tr>
+<td>36-45 岁</td>
+<td style="text-align:center">211</td>
+<td style="text-align:center">21.1%</td>
+</tr>
+<tr>
+<td>46-55 岁</td>
+<td style="text-align:center">223</td>
+<td style="text-align:center">22.3%</td>
+</tr>
+<tr>
+<td>55 岁以上</td>
+<td style="text-align:center">177</td>
+<td style="text-align:center">17.7%</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>36-55 岁用户最多（211+223=434 人，占 43.4%）</strong>：处于「上有老下有小」的家庭主力期与成熟稳定期，是平台的营收主力群体</li>
+<li><strong>18-25 岁年轻用户仅 152 人（15.2%）</strong>：收入偏低但开始独立消费、处于价格敏感期，是平台用户增长的<strong>核心潜力缺口</strong></li>
+</ul>
+<p><img src="age_dist.png" alt="用户年龄分布"></p>
+<h3 id="3-年龄--消费交叉分析">③ 年龄 × 消费交叉分析 </h3>
+<p>对各年龄段的 <code>Total_Spending</code> 聚合（sum / mean / count）：</p>
+<table>
+<thead>
+<tr>
+<th>年龄段</th>
+<th style="text-align:center">人均消费</th>
+<th style="text-align:center">总消费</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>18 岁以下</td>
+<td style="text-align:center">2,462 元</td>
+<td style="text-align:center">61,540</td>
+</tr>
+<tr>
+<td>18-25 岁</td>
+<td style="text-align:center">2,518 元</td>
+<td style="text-align:center">382,739</td>
+</tr>
+<tr>
+<td>26-35 岁</td>
+<td style="text-align:center">2,504 元</td>
+<td style="text-align:center">530,788</td>
+</tr>
+<tr>
+<td>36-45 岁</td>
+<td style="text-align:center">2,550 元</td>
+<td style="text-align:center">538,146</td>
+</tr>
+<tr>
+<td>46-55 岁</td>
+<td style="text-align:center">2,596 元</td>
+<td style="text-align:center">579,002</td>
+</tr>
+<tr>
+<td>55 岁以上</td>
+<td style="text-align:center"><strong>2,603 元</strong></td>
+<td style="text-align:center">460,742</td>
+</tr>
+</tbody>
+</table>
+<p>各年龄段消费水平接近（约 2500-2600 元），其中 <strong>55 岁以上用户人均消费最高（2603 元）</strong>，其次为 46-55 岁（2596 元）——中老年群体消费能力不容忽视。</p>
+<p><img src="age_consume.png" alt="年龄层消费对比"></p>
+<h3 id="4-地域分布">④ 地域分布 </h3>
+<ul>
+<li>Suburban（郊区）349 人，Urban（城市）344 人，Rural（农村）307 人</li>
+<li><strong>郊区 + 农村合计占比 65.6%</strong>，是平台的基本盘</li>
+<li>城市用户选择多、竞争激烈，看重品质与品牌、线上线下都有渠道，适合走种草营销、社交裂变路线；<strong>郊区与农村用户更看重价格、主要依赖线上</strong>，适合以低价爆款、包邮到家策略刺激消费</li>
+</ul>
+<p><img src="area_dist.png" alt="用户区域分布"></p>
+<h3 id="5-兴趣--品类偏好分布">⑤ 兴趣 &amp; 品类偏好分布 </h3>
+<ul>
+<li><strong>兴趣 TOP3</strong>：Sports（213）、Fashion（209）、Travel（196）</li>
+<li><strong>品类偏好 TOP3</strong>：Apparel（218）、Electronics（209）、Books（198）</li>
+<li>兴趣与品类偏好存在错位（如兴趣最高的 Sports 并非购买最多的品类），为后文「兴趣匹配度」指标埋下伏笔</li>
+</ul>
+<p><img src="interest_category.png" alt="用户兴趣与品类偏好"></p>
+<hr>
+<h2 id="第三阶段用户活跃度分析逛啥">第三阶段：用户活跃度分析（逛啥） </h2>
+<h3 id="1-用户活跃度分布距上次登录天数直方图--密度曲线">① 用户活跃度分布（距上次登录天数直方图 + 密度曲线） </h3>
+<p><img src="active_dist.png" alt="用户活跃度分布"></p>
+<ul>
+<li><strong>用户粘性中等</strong>：核心用户群体上次登录约两周（15-16 天）左右，既不是高频日活，也不是长期流失</li>
+<li><strong>潜在流失风险</strong>：25 天以上未登录的用户仍较多，需进一步关注是否有继续流失的可能</li>
+</ul>
+<blockquote>
+<p>💡 <strong>分层运营策略</strong>：</p>
+<ul>
+<li><strong>0-10 天</strong>低活跃用户 → 新手引导 / 专属福利，提升登录频率</li>
+<li><strong>15-22 天</strong>核心用户 → 推送召回</li>
+<li><strong>25 天以上</strong>用户 → 流失召回（优惠券 + 个性化推荐）</li>
+</ul>
+</blockquote>
+<h3 id="2-订阅-vs-非订阅用户停留时长对比箱线图">② 订阅 vs 非订阅用户停留时长对比（箱线图） </h3>
+<p><img src="subscribe_compare.png" alt="订阅粘性对比"></p>
+<ul>
+<li>通过箱线图对比邮件订阅用户与非订阅用户的网站停留时长，发现<strong>订阅用户的停留时长无显著优势</strong></li>
+<li>两组均存在大量<strong>极短停留（0 分钟）<strong>与</strong>极长停留</strong>用户：
+<ul>
+<li>极短停留：可能是新用户、误访问或流失用户</li>
+<li>极长停留：可能是高价值活跃用户或深度浏览用户</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>🔍 结论：当前邮件订阅对「增加停留时长」的贡献有限，需优化邮件内容策略或重新评估该渠道价值。</p>
+</blockquote>
+<h3 id="3-浏览行为与购买频次相关性热力图--相关系数">③ 浏览行为与购买频次相关性（热力图 + 相关系数） </h3>
+<table>
+<thead>
+<tr>
+<th>指标对</th>
+<th style="text-align:center">相关系数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>浏览时长 vs 购买频次</td>
+<td style="text-align:center"><strong>-0.028</strong></td>
+</tr>
+<tr>
+<td>浏览页数 vs 购买频次</td>
+<td style="text-align:center"><strong>0.026</strong></td>
+</tr>
+</tbody>
+</table>
+<p><img src="browse_buy.png" alt="浏览时长与购买频次相关性"></p>
+<blockquote>
+<p>🔍 <strong>关键发现</strong>：浏览时长、浏览页数与购买频次的相关性均<strong>趋近于零</strong>，说明存在大量 <strong>「观光用户」</strong>——贡献了流量和活跃度，但未贡献 GMV。他们浏览意愿强但转化尚未被触发，是等待转化的核心潜力池。</p>
+</blockquote>
+<hr>
+<h2 id="第四阶段改良-rfm-模型--rfi指标构建">第四阶段：改良 RFM 模型 → RFI（指标构建） </h2>
+<h3 id="传统-rfm-的局限性">传统 RFM 的局限性 </h3>
+<p>传统 RFM 只看 <strong>花钱</strong>（R=最近登录、F=购买频率、M=消费金额），三个指标组合得到 8 类用户（从最值钱到最不值钱），但<strong>看不到「逛」和「互动」</strong>。</p>
+<h3 id="新增五个维度">新增五个维度 </h3>
+<table>
+<thead>
+<tr>
+<th>新增指标</th>
+<th>公式 / 逻辑</th>
+<th>业务含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>意向度 (Satisfaction)</strong></td>
+<td>停留时长归一化得分 × 0.5 + 浏览页数归一化得分 × 0.5</td>
+<td>用户是否有购买意愿</td>
+</tr>
+<tr>
+<td><strong>转化摩擦系数 (Friction)</strong></td>
+<td>浏览页数 / (购买次数 + 1)（+1 防分母为零）</td>
+<td>看了很多但买得很少 = 很纠结</td>
+</tr>
+<tr>
+<td><strong>活跃忠诚度 (Loyalty)</strong></td>
+<td>订阅状态 × 最近登录天数 → 1/2/3 分</td>
+<td>区分真忠诚 vs 假忠诚</td>
+</tr>
+<tr>
+<td><strong>购买力层级 (Income Level)</strong></td>
+<td>收入 33% / 66% 分位数 → Low/Medium/High</td>
+<td>有钱不花（高潜）vs 没钱不花（正常）</td>
+</tr>
+<tr>
+<td><strong>兴趣匹配度 (Interest Match)</strong></td>
+<td>兴趣标签 == 购买品类偏好（0/1）</td>
+<td>推荐是否精准</td>
+</tr>
+</tbody>
+</table>
+<h3 id="指标应用到数据的结果">指标应用到数据的结果 </h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Satisfaction</td>
+<td>范围 [0.00, 98.83]</td>
+</tr>
+<tr>
+<td>Friction</td>
+<td>范围 [0.10, 49.00]</td>
+</tr>
+<tr>
+<td>Loyalty_Score</td>
+<td>{1: 824, 2: 77, 3: 99}</td>
+</tr>
+<tr>
+<td>Income_Level</td>
+<td>Low 334 / Medium 332 / High 334</td>
+</tr>
+<tr>
+<td>Interest_Match 匹配率</td>
+<td><strong>0.0%</strong>（兴趣与购买品类完全错位，推荐亟待优化）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>Loyalty 打分逻辑</strong>：订阅且 7 天内登录 = 3 分；未订阅但 7 天内登录 = 2 分；其余（超 7 天未登录）= 1 分。</p>
+</blockquote>
+<h3 id="关键分布可视化">关键分布可视化 </h3>
+<p><img src="user_feature.png" alt="用户关键特征分析"></p>
+<p>上图为 2×2 组合图：</p>
+<ol>
+<li><strong>Total Spending 分布</strong>（直方图，红线标注中位数 2542）</li>
+<li><strong>Income vs Total Spending 散点图</strong>（按收入层级染色 + 红色回归趋势线）——消费与收入呈正相关</li>
+<li><strong>订阅状态 vs 最近登录天数</strong>（箱线图）</li>
+<li><strong>Satisfaction 分布</strong>（直方图 + 密度曲线）</li>
+</ol>
+<p><img src="corr_matrix.png" alt="特征相关性矩阵"></p>
+<p>特征相关性矩阵（10 维数值特征）显示：<code>Income</code> 与 <code>Total_Spending</code> 正相关较强，而行为指标（时长、页数）与消费指标相关性弱，印证了「观光用户」的存在。</p>
+<h3 id="关键人群挖掘">关键人群挖掘 </h3>
+<ul>
+<li><strong>高摩擦用户分析</strong>（Friction &gt; 75% 分位）：共 <strong>247 人</strong>，平均浏览 34.3 页、购买仅 1.6 次、消费 2514 元——「看得多、买得少」的纠结人群</li>
+<li><strong>高收入低消费群体分析</strong>（High 收入 + 消费低于中位数）：共 <strong>181 人，占高收入群体 54.2%</strong>——超过一半的高收入用户「有钱但没花」，是传统 RFM 无法识别的巨大增量空间</li>
+</ul>
+<hr>
+<h2 id="第五阶段rfm-satisfaction-综合评分与用户分层画像">第五阶段：RFM-Satisfaction 综合评分与用户分层画像 </h2>
+<h3 id="综合评分公式">综合评分公式 </h3>
+<pre data-role="codeBlock" data-info="" class="language-text"><code># 归一化：任意列缩放到 0-100（所有值相同则给 50 分防分母为零）
+R_Score = Min-Max归一化(Last_Login_Days_Ago, 反向)   # 最近登录越近分越高
+F_Score = Min-Max归一化(Purchase_Frequency)
+M_Score = Min-Max归一化(Total_Spending)
+
+# 传统 RFM 加权评分
+RFM_Score = 0.2×R_Score + 0.3×F_Score + 0.5×M_Score
+
+# 引入意向度作为放大系数
+I_Weight = Satisfaction / 500        # 将满意度缩放到 0~0.2
+Final_Score = RFM_Score × (1 + I_Weight)
+</code></pre><table>
+<thead>
+<tr>
+<th>评分</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R_Score / F_Score / M_Score</td>
+<td>[0, 100]</td>
+</tr>
+<tr>
+<td>RFM_Score</td>
+<td>[4.72, 96.77]</td>
+</tr>
+<tr>
+<td>Final_Score</td>
+<td>[5.26, 105.06]</td>
+</tr>
+</tbody>
+</table>
+<h3 id="分层逻辑拓扑">分层逻辑拓扑 </h3>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>                 ┌─────────────────────────────────────────────┐
+                 │          传统RFM三指标(R/F/M)初分类           │
+                 │  重要价值 / 重要发展 / 重要保持 / 重要挽留     │
+                 │       一般发展 / 一般维持 / 一般 / 低值       │
+                 └─────────────────┬───────────────────────────┘
+                                   │
+                    ┌──────────────┼──────────────┐
+                    ▼              ▼              ▼
+              ┌──────────┐  ┌──────────┐  ┌──────────┐
+              │ 意向度S  │  │ 收入层级  │  │ 摩擦系数  │
+              └────┬─────┘  └────┬─────┘  └────┬─────┘
+                   │              │              │
+                   └──────────────┼──────────────┘
+                                  ▼
+                    ┌─────────────────────────┐
+                    │    修正为15类精细标签     │
+                    │ 核心VIP/纠结土豪/高潜沉睡 │
+                    │  隐形活跃/犹豫潜力/...   │
+                    └─────────────────────────┘
+</code></pre><h3 id="修正规则按易误判程度从高到低优先判断">修正规则（按易误判程度从高到低优先判断） </h3>
+<table>
+<thead>
+<tr>
+<th>优先判断条件</th>
+<th>修正标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Low-Value/General Maintenance 且 High 收入 且 S&gt;60</td>
+<td>High-Potential Sleeping Users（高潜沉睡）</td>
+</tr>
+<tr>
+<td>High 收入 且 S&gt;70 且 F&lt;40 且 M&lt;50</td>
+<td>High-Spending Hesitant Users（纠结土豪）</td>
+</tr>
+<tr>
+<td>General Maintenance/Development 且 S&gt;80 且高摩擦</td>
+<td>Potential Hesitant Users（犹豫潜力）</td>
+</tr>
+<tr>
+<td>Low 收入 且 S&gt;70 且 F&lt;40</td>
+<td>Invisible Active Users（隐形活跃）</td>
+</tr>
+<tr>
+<td>High 收入 且 R&lt;40 且 M&gt;50</td>
+<td>High-Potential At-Risk Users（高潜流失客）</td>
+</tr>
+<tr>
+<td>M&gt;70 且 F&gt;70 且 S&gt;60</td>
+<td>Core VIP Users（核心 VIP）</td>
+</tr>
+<tr>
+<td>Low 收入 且 S&lt;40 且 M&lt;40</td>
+<td>Penny Pinchers / Low-Value（羊毛党/低值）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="用户分布统计15-类">用户分布统计（15 类） </h3>
+<table>
+<thead>
+<tr>
+<th>用户分层</th>
+<th style="text-align:center">用户数</th>
+<th style="text-align:center">占比</th>
+<th style="text-align:center">平均消费</th>
+<th style="text-align:center">平均购买频次</th>
+<th style="text-align:center">平均意向分</th>
+<th style="text-align:center">平均综合分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>General Users</td>
+<td style="text-align:center">443</td>
+<td style="text-align:center">44.3%</td>
+<td style="text-align:center">2368</td>
+<td style="text-align:center">5.17</td>
+<td style="text-align:center">48.80</td>
+<td style="text-align:center">54.31</td>
+</tr>
+<tr>
+<td>General Development Users</td>
+<td style="text-align:center">80</td>
+<td style="text-align:center">8.0%</td>
+<td style="text-align:center">1126</td>
+<td style="text-align:center">6.45</td>
+<td style="text-align:center">50.05</td>
+<td style="text-align:center">52.88</td>
+</tr>
+<tr>
+<td>Important Win-Back Users</td>
+<td style="text-align:center">67</td>
+<td style="text-align:center">6.7%</td>
+<td style="text-align:center">4134</td>
+<td style="text-align:center">2.57</td>
+<td style="text-align:center">46.53</td>
+<td style="text-align:center">58.59</td>
+</tr>
+<tr>
+<td>High-Potential At-Risk Users</td>
+<td style="text-align:center">64</td>
+<td style="text-align:center">6.4%</td>
+<td style="text-align:center">3991</td>
+<td style="text-align:center">4.92</td>
+<td style="text-align:center">44.09</td>
+<td style="text-align:center">65.40</td>
+</tr>
+<tr>
+<td>Low-Value Users</td>
+<td style="text-align:center">50</td>
+<td style="text-align:center">5.0%</td>
+<td style="text-align:center">1037</td>
+<td style="text-align:center">1.68</td>
+<td style="text-align:center">42.79</td>
+<td style="text-align:center">20.87</td>
+</tr>
+<tr>
+<td>Important Development Users</td>
+<td style="text-align:center">48</td>
+<td style="text-align:center">4.8%</td>
+<td style="text-align:center">3874</td>
+<td style="text-align:center">1.62</td>
+<td style="text-align:center">48.91</td>
+<td style="text-align:center">65.41</td>
+</tr>
+<tr>
+<td>General Maintenance Users</td>
+<td style="text-align:center">47</td>
+<td style="text-align:center">4.7%</td>
+<td style="text-align:center">1055</td>
+<td style="text-align:center">1.47</td>
+<td style="text-align:center">45.83</td>
+<td style="text-align:center">33.57</td>
+</tr>
+<tr>
+<td>Important Value Users</td>
+<td style="text-align:center">47</td>
+<td style="text-align:center">4.7%</td>
+<td style="text-align:center">3960</td>
+<td style="text-align:center">7.47</td>
+<td style="text-align:center">42.28</td>
+<td style="text-align:center"><strong>86.82</strong></td>
+</tr>
+<tr>
+<td>Important Retention Users</td>
+<td style="text-align:center">39</td>
+<td style="text-align:center">3.9%</td>
+<td style="text-align:center">4030</td>
+<td style="text-align:center">7.49</td>
+<td style="text-align:center">48.00</td>
+<td style="text-align:center">75.26</td>
+</tr>
+<tr>
+<td>Invisible Active Users</td>
+<td style="text-align:center">34</td>
+<td style="text-align:center">3.4%</td>
+<td style="text-align:center">2757</td>
+<td style="text-align:center">1.32</td>
+<td style="text-align:center">77.99</td>
+<td style="text-align:center">47.28</td>
+</tr>
+<tr>
+<td>Penny Pinchers / Low-Value Users</td>
+<td style="text-align:center">33</td>
+<td style="text-align:center">3.3%</td>
+<td style="text-align:center">1003</td>
+<td style="text-align:center">5.48</td>
+<td style="text-align:center">23.37</td>
+<td style="text-align:center">37.02</td>
+</tr>
+<tr>
+<td><strong>Core VIP Users</strong></td>
+<td style="text-align:center">23</td>
+<td style="text-align:center">2.3%</td>
+<td style="text-align:center">4171</td>
+<td style="text-align:center">8.17</td>
+<td style="text-align:center">71.09</td>
+<td style="text-align:center"><strong>88.86</strong></td>
+</tr>
+<tr>
+<td>High-Potential Sleeping Users</td>
+<td style="text-align:center">12</td>
+<td style="text-align:center">1.2%</td>
+<td style="text-align:center">1318</td>
+<td style="text-align:center">1.75</td>
+<td style="text-align:center">74.34</td>
+<td style="text-align:center">35.20</td>
+</tr>
+<tr>
+<td>Potential Hesitant Users</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">0.7%</td>
+<td style="text-align:center">739</td>
+<td style="text-align:center">2.43</td>
+<td style="text-align:center">90.23</td>
+<td style="text-align:center">34.69</td>
+</tr>
+<tr>
+<td>High-Spending Hesitant Users</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">0.6%</td>
+<td style="text-align:center">1157</td>
+<td style="text-align:center">1.67</td>
+<td style="text-align:center">78.86</td>
+<td style="text-align:center">30.24</td>
+</tr>
+</tbody>
+</table>
+<p><img src="segment_distribution.png" alt="用户分层分布"></p>
+<h3 id="典型用户群雷达图">典型用户群雷达图 </h3>
+<p><img src="segment_radar.png" alt="分层雷达图"></p>
+<p><strong>关键发现</strong>：</p>
+<ul>
+<li><strong>核心 VIP</strong>（23 人）与 <strong>重要价值用户</strong>（47 人）在 R/F/M/I 四维均表现突出，合计仅占 7%，是平台的「顶梁柱」</li>
+<li><strong>纠结土豪</strong>（High-Spending Hesitant，高收入高意向低消费）与 <strong>高潜沉睡用户</strong>（High-Potential Sleeping，高收入高意向 RFM 低）是传统 RFM <strong>无法识别</strong>的高价值增量人群</li>
+<li><strong>隐形活跃者</strong>（Invisible Active，低收入高意向低购买）是有流量价值的潜力用户</li>
+</ul>
+<hr>
+<h2 id="第六阶段roi-测算对比">第六阶段：ROI 测算对比 </h2>
+<h3 id="测算逻辑边际增量法">测算逻辑（边际增量法） </h3>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>增量收益 = 目标用户数 × 边际转化提升 × 平均客单价（AOV）
+边际 ROI = (增量收益 - 优惠券成本) / 优惠券成本 × 100%
+成本 = 目标用户数 × 单张优惠券成本
+</code></pre><blockquote>
+<p>边际增量法只关注「发券带来的<strong>额外</strong>转化」，而非混淆自然转化，避免高估 ROI。</p>
+</blockquote>
+<h3 id="关键假设">关键假设 </h3>
+<table>
+<thead>
+<tr>
+<th>假设项</th>
+<th style="text-align:center">传统 RFM 策略（方案A）</th>
+<th style="text-align:center">优化 RFI 策略（方案B）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目标用户</td>
+<td style="text-align:center">RFM 前 20%（200 人）</td>
+<td style="text-align:center">核心 70 + 潜力 89（159 人）</td>
+</tr>
+<tr>
+<td>自然转化率</td>
+<td style="text-align:center">20%</td>
+<td style="text-align:center">核心 25% / 潜力 1%</td>
+</tr>
+<tr>
+<td>发券后转化率</td>
+<td style="text-align:center">30%</td>
+<td style="text-align:center">核心 30% / 潜力 20%</td>
+</tr>
+<tr>
+<td>边际提升</td>
+<td style="text-align:center">10%</td>
+<td style="text-align:center">核心 5% / 潜力 <strong>19%</strong></td>
+</tr>
+<tr>
+<td>平均客单价</td>
+<td style="text-align:center">104 元</td>
+<td style="text-align:center">104 元</td>
+</tr>
+<tr>
+<td>总预算</td>
+<td style="text-align:center">10,000 元</td>
+<td style="text-align:center">10,000 元</td>
+</tr>
+<tr>
+<td>优惠券成本</td>
+<td style="text-align:center">10 元/人</td>
+<td style="text-align:center">10 元/人</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>目标人群定义</strong>：</p>
+<ul>
+<li>核心用户 = Core VIP Users + Important Value Users（23 + 47 = <strong>70 人</strong>）</li>
+<li>潜力用户 = 纠结土豪 + 高潜沉睡 + 犹豫潜力 + 高潜流失客（6 + 12 + 7 + 64 = <strong>89 人</strong>）</li>
+<li><strong>预算分配</strong>：80% 预算优先给核心用户，剩余预算给潜力用户</li>
+</ul>
+</blockquote>
+<h3 id="对比结果">对比结果 </h3>
+<p><img src="roi_comparison.png" alt="ROI对比"></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th style="text-align:center">传统 RFM（方案A）</th>
+<th style="text-align:center">优化 RFI（方案B）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>目标用户数</strong></td>
+<td style="text-align:center">200 人</td>
+<td style="text-align:center">159 人（核心 70 + 潜力 89）</td>
+</tr>
+<tr>
+<td><strong>实际成本</strong></td>
+<td style="text-align:center">2,000 元</td>
+<td style="text-align:center">1,590 元</td>
+</tr>
+<tr>
+<td><strong>预算使用率</strong></td>
+<td style="text-align:center">20.0%</td>
+<td style="text-align:center">15.9%</td>
+</tr>
+<tr>
+<td><strong>增量收益</strong></td>
+<td style="text-align:center">2,081 元</td>
+<td style="text-align:center">2,123 元</td>
+</tr>
+<tr>
+<td><strong>边际 ROI</strong></td>
+<td style="text-align:center">4.0%</td>
+<td style="text-align:center"><strong>33.5%</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎯 优化 RFI 策略在<strong>边际收益基本持平</strong>（2123 vs 2081 元）的前提下，仅用 15.9% 的预算就实现了 33.5% 的边际 ROI，远高于传统 RFM 的 4.0%。在预算有限场景下，这一策略更具实操价值。</p>
+</blockquote>
+<hr>
+<h2 id="第七阶段业务结论">第七阶段：业务结论 </h2>
+<ol>
+<li><strong>优化 RFI 策略显著优于传统 RFM</strong>：在边际增量收益基本持平的前提下，仅用 15.9% 的预算实现 33.5% 的边际 ROI，预算效率与投入产出比大幅提升</li>
+<li><strong>潜力用户是提升 ROI 的关键增量来源</strong>：潜力用户边际转化提升高达 19%，远高于核心用户与 RFM 头部用户，精准挖掘这部分人群能以更低成本撬动更高转化</li>
+<li><strong>多维度行为指标让用户分层更科学</strong>：新增 I_Score、Friction、L_Score 后，模型从「只看历史消费」升级为「消费 + 意向 + 摩擦 + 粘性」的综合判断，能识别传统 RFM 遗漏的高潜人群</li>
+<li><strong>特征使用应遵循业务逻辑，而非盲目入模</strong>：购买力（Income_Level）等背景信息更适合作为分层标签而非评分因子，体现「业务理解优先于特征堆砌」的建模思路</li>
+</ol>
+<hr>
+<h2 id="-业务建议">💼 业务建议 </h2>
+<ol>
+<li><strong>精准投放，优先触达高潜人群</strong>：将有限预算优先分配给核心 VIP（23 人）和高潜沉睡/纠结土豪用户（18 人），ROI 最大化</li>
+<li><strong>观光用户转化专项</strong>：针对浏览多但买得少的用户（高摩擦用户 247 人），设计「首单立减」「限时折扣」等转化钩子</li>
+<li><strong>高收入低消费用户唤醒</strong>：54.2% 的高收入用户「有钱没花」，定向推送高客单价商品与会员权益</li>
+<li><strong>郊区/农村用户差异化运营</strong>：以低价爆款、包邮策略为核心，区别于城市用户的品质种草路线</li>
+<li><strong>流失预警机制</strong>：对「上次登录 &gt; 25 天 + 高消费」的高潜流失客（High-Potential At-Risk，64 人），提前触发优惠券召回</li>
+<li><strong>邮件订阅价值重估</strong>：当前订阅用户与未订阅用户活跃度无显著差异，需优化邮件内容策略或重新评估渠道价值</li>
+<li><strong>兴趣推荐精准化</strong>：兴趣与品类匹配率当前为 0.0%，需打通「兴趣标签 → 商品推荐」链路</li>
+</ol>
+<hr>
+<h2 id="-技术栈">🛠 技术栈 </h2>
+<ul>
+<li><strong>Python 3.x</strong></li>
+<li><strong>Pandas</strong> — 数据处理与特征工程（分箱、分组聚合、qcut、apply）</li>
+<li><strong>NumPy</strong> — 数值计算与归一化</li>
+<li><strong>Matplotlib + Seaborn</strong> — 数据可视化（柱状图、直方图、箱线图、散点图、热力图、雷达图）</li>
+<li><strong>Scikit-learn</strong> — 相关性分析</li>
+</ul>
+<hr>
+<h2 id="-设计理念">📝 设计理念 </h2>
+<blockquote>
+<p>本项目遵循 <strong>「业务理解优先于特征堆砌」</strong> 的建模原则：</p>
+<ul>
+<li>特征分类遵循业务逻辑（<strong>属性（是谁）→ 行为（逛啥）→ 消费（花啥）</strong>），而非盲目入模</li>
+<li>购买力（Income）等背景信息作为 <strong>分层标签</strong> 而非评分因子，保持评分体系的因果纯净性</li>
+<li>ROI 测算采用 <strong>边际增量法</strong>，关注「发券带来的额外转化」，而非混淆自然转化</li>
+<li>模型的最终目标是 <strong>可落地的运营策略</strong>，而非仅追求数学精度</li>
+</ul>
+</blockquote>
+<hr>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

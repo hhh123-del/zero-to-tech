@@ -33,7 +33,7 @@
 
 .featured-title {
   max-width: 720px;
-  font-size: clamp(34px, 4.2vw, 52px);
+  font-size: clamp(18px, 2.2vw, 24px);
   line-height: 1.04;
   letter-spacing: -0.05em;
   font-weight: 600;
@@ -42,7 +42,7 @@
 .featured-copy {
   max-width: 520px;
   color: var(--text-soft);
-  font-size: clamp(17px, 2vw, 21px);
+  font-size: 16px;
   line-height: 1.28;
   letter-spacing: -0.02em;
 }
@@ -96,4 +96,34 @@
   line-height: 1.4;
   letter-spacing: -0.02em;
   font-weight: 500;
+}
+
+.work-two-col{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap:24px;
+  margin-top:12px;
+}
+@media(max-width:768px){
+  .work-two-col{
+    grid-template-columns:1fr;
+  }
+}
+
+.panel-full{
+  margin-top:28px;
+}
+
+.block-title {
+  font-size: 1.5rem;
+  margin: 8px 0 12px 0;
+  font-weight: 600;
+}
+
+.block-text {
+  line-height: 1.7;
+}
+
+.block-text p {
+  margin: 6px 0;
 }
