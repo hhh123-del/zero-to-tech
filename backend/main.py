@@ -1,5 +1,6 @@
 import os
 import json
+from storage import init_db,save_record, get_history
 import re
 import httpx
 from datetime import datetime, timezone
@@ -12,6 +13,8 @@ from pypinyin import lazy_pinyin, Style
 from snownlp import SnowNLP
 from dotenv import load_dotenv
 
+
+init_db()
 # 读取项目根目录 .env.local 里的 Dify 配置。
 # 前端「SQL-Agent实验室」的按钮现在走 FastAPI 中转，由这里代理转发到 Dify。
 load_dotenv(Path(__file__).resolve().parent.parent / ".env.local")
@@ -19,19 +22,6 @@ DIFY_BASE_URL = os.getenv("DIFY_BASE_URL")
 DIFY_API_KEY = os.getenv("DIFY_API_KEY")
 
 HISTORY_FILE = Path(__file__).parent / "history.json"  # 固定到 backend/ 目录，跟启动目录无关
-
-def load_history():
-    try:
-        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return []
-
-def save_record(record):
-    records = load_history()
-    records.append(record)
-    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(records, f, ensure_ascii=False, indent=2)
 
 
 
@@ -47,25 +37,7 @@ app.add_middleware(
 
 class AnalyzeRequest(BaseModel):
     text: str
-profile = {
-    "heroTitle": "关于我",
-    "heroSubtitle": "项目，创意，灵感，心得，我的作品",
-    "featuredWork": {
-        "kicker": "作品",
-        "title": "文字实验室",
-        "copy": "拼音和情绪，挖掘中文里的细节",
-        "linkLabel": "打开作品",
-    },
-    "identity": {
-        "motto": "已识乾坤大，尤怜草木青",
-        "learning": "零到全栈",
-    },
-};
 
-
-@app.get("/api/profile")
-def get_profile():
-    return profile
 
 def score_label(score):
     if score >= 0.6:
@@ -91,9 +63,7 @@ def analyze(req: AnalyzeRequest):
 
 @app.get("/api/history")
 def history():
-    records = load_history()
-    records.reverse()          # 倒过来：新的排前面
-    return records[:2]        # 切一刀：只留最近 10 条
+   return get_history(2)  # 切一刀：只留最近 10 条
 
 
 # Dify Agent 在回答里会夹带一些"中间步骤"提示词（如"SQL正在生成中"），

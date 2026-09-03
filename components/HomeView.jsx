@@ -17,23 +17,6 @@ const API = process.env.NEXT_PUBLIC_API_BASE_URL;
 export default function HomeView() {
   const [data, setData] = useState(home);
 
-  useEffect(() => {
-    async function loadProfile() {
-      try {
-        const res = await fetch(`${API}/api/profile`);
-        if (!res.ok) {
-          throw new Error(`主页数据加载失败：${res.status}`);
-        }
-        //setData(await res.json());
-        setData(structuredClone(home));
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    loadProfile();
-  }, []);
-
   return (
     <AnimatedCardGrid className="dashboard-grid">
       <article className="hero-stage panel-full">
