@@ -1,0 +1,317 @@
+/* ===== 学习笔记页专属样式 =====
+   复用 cards.css 的 .panel / .section-kicker 等基础类，这里补笔记页特有的：
+   两栏布局（侧栏大纲 + 正文）、固定搜索框 + 可滚动大纲、可折叠大纲树、
+   以及 markdown 正文排版（标题/表格/代码块/引用）。 */
+
+/* 两栏布局：左栏大纲，右栏正文 */
+.notes-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  margin-top: 28px;
+}
+
+/* 侧栏：吸顶。整体是纵向 flex——搜索框固定在顶部，大纲在下面独立滚动 */
+.notes-sidebar {
+  position: sticky;
+  top: 72px; /* 让出吸顶 header 的高度 */
+  max-height: calc(100vh - 88px);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.notes-search {
+  flex-shrink: 0;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: var(--surface-soft);
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.notes-search:focus {
+  border-color: var(--brand);
+}
+
+/* 大纲顶部的"全部展开 / 全部折叠"小按钮 */
+.notes-outline-controls {
+  flex-shrink: 0;
+  display: flex;
+  gap: 14px;
+  margin-top: 12px;
+}
+.notes-control {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.notes-control:hover {
+  color: var(--brand);
+}
+
+/* 大纲列表：占满剩余高度，超出自己滚动（搜索框始终不动） */
+.notes-outline {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  margin-top: 14px;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notes-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.notes-note-title {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.notes-note-title.active {
+  color: var(--brand);
+}
+
+.notes-hint {
+  margin: 4px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* ===== 可折叠大纲树 ===== */
+.notes-outline-row {
+  display: flex;
+  align-items: center;
+}
+.notes-toggle {
+  flex-shrink: 0;
+  width: 16px;
+  height: 20px;
+  margin-right: 2px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--text-muted);
+}
+.notes-toggle:hover {
+  color: var(--brand);
+}
+.notes-toggle-spacer {
+  flex-shrink: 0;
+  width: 16px;
+  margin-right: 2px;
+}
+
+.notes-outline-item {
+  display: block;
+  text-align: left;
+  background: none;
+  border: none;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+.notes-outline-item:hover {
+  color: var(--brand);
+}
+/* 树里的一行里，标题按钮占满剩余宽度，方便整行点击 */
+.notes-outline-row .notes-outline-item {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* 正文卡片 */
+.notes-doc {
+  padding: 32px 36px;
+}
+
+.notes-desc {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+/* ===== markdown 正文排版 ===== */
+.notes-body {
+  color: var(--text-main);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.notes-body h1,
+.notes-body h2,
+.notes-body h3,
+.notes-body h4,
+.notes-body h5,
+.notes-body h6 {
+  scroll-margin-top: 72px; /* 锚点定位时不被吸顶 header 挡住 */
+  color: var(--text-main);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.notes-body h1 {
+  font-size: 28px;
+  margin: 28px 0 12px;
+}
+.notes-body h2 {
+  font-size: 22px;
+  margin: 26px 0 10px;
+}
+.notes-body h3 {
+  font-size: 18px;
+  margin: 20px 0 8px;
+}
+.notes-body h4 {
+  font-size: 16px;
+  margin: 16px 0 6px;
+}
+.notes-body h5,
+.notes-body h6 {
+  font-size: 15px;
+  margin: 14px 0 6px;
+}
+/* 文档开头的那个 h1 不要顶着上面留大白 */
+.notes-body > h1:first-child {
+  margin-top: 0;
+}
+
+.notes-body p {
+  margin: 8px 0;
+  color: var(--text-soft);
+}
+
+.notes-body ul,
+.notes-body ol {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+.notes-body li {
+  margin: 4px 0;
+}
+
+.notes-body a {
+  color: var(--brand);
+}
+
+/* 引用块：左边一条品牌色竖线 */
+.notes-body blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-left: 3px solid var(--brand);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+}
+.notes-body blockquote p {
+  margin: 4px 0;
+}
+
+/* 行内代码 */
+.notes-body :not(pre) > code {
+  padding: 1px 6px;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: var(--surface-soft);
+  font-family: "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas,
+    monospace;
+  font-size: 0.88em;
+  color: var(--text-main);
+}
+
+/* 代码块：浅底等宽，保留 highlight.js 的 token 颜色 */
+.notes-body pre {
+  margin: 16px 0;
+  padding: 16px 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-soft);
+  background: #f5f5f7;
+  overflow-x: auto;
+}
+.notes-body pre code {
+  font-family: "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas,
+    monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #1d1d1f;
+}
+/* highlight.js 主题自带 .hljs 背景，这里去掉，让 pre 的浅底透出来 */
+.notes-body pre code.hljs {
+  background: transparent;
+  padding: 0;
+}
+
+/* 表格 */
+.notes-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.notes-body th,
+.notes-body td {
+  border: 1px solid var(--border-soft);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.notes-body th {
+  background: var(--surface-soft);
+  font-weight: 600;
+}
+.notes-body tr:nth-child(even) td {
+  background: var(--surface-soft);
+}
+
+/* 分隔线 */
+.notes-body hr {
+  border: none;
+  border-top: 1px solid var(--border-soft);
+  margin: 24px 0;
+}
+
+/* 移动端：两栏变一栏，侧栏不再吸顶 */
+@media (max-width: 768px) {
+  .notes-layout {
+    grid-template-columns: 1fr;
+  }
+  .notes-sidebar {
+    position: static;
+    max-height: none;
+  }
+  .notes-outline {
+    overflow-y: visible;
+  }
+  .notes-doc {
+    padding: 24px 20px;
+  }
+}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Nav from "./Nav.jsx";
 import PageHeading from "./PageHeading.jsx";
 import AnimatedCardGrid from "./AnimatedCardGrid.jsx";
 import SqlInputCard from "./SqlInputCard.jsx";
@@ -19,7 +18,6 @@ export default function SqlAgentLabView() {
     <AnimatedCardGrid className="dashboard-grid">
       {/* 顶部 hero：导航 + 大标题，和 TextLab 页保持一致 */}
       <article className="hero-stage panel-full">
-        <Nav />
         <PageHeading title={sqlAgentLab.heroTitle} subtitle={sqlAgentLab.heroSubtitle} />
       </article>
 

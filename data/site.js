@@ -17,7 +17,7 @@ export const home = {
   },
   secondWork:{
     kicker:"作品",
-    title:"SQL-Agent实验室",
+    title:"SQL-Agent",
     copy:"自然语言查询电商RFM数据集，AI自动生成SQL，支持图表解析",
     linkLabel:"打开作品",
     href:"/sql-agent-lab"
@@ -32,19 +32,17 @@ export const home = {
   techReview:{
     kicker:"技术复盘",
     title:"Zero-to-Tech 站点整体架构",
+    copy:"Next.js前端 /API路由/前后端交互流程/遇到问题/业务区分",
     linkLabel:"查看复盘",
     href:"/tech-review",
-    points:[
-      "Next.js前端，组件化开发，InputCard公用组件复用思考与踩坑",
-      "Next.js API路由作为中转层，对接Dify Agent接口",
-      "前后端交互流程：前端输入 → 中转api → Dify Agent → 返回结果渲染页面",
-      "遇到问题：公用组件透传完整对象，上层未解析字段导致页面空白；页面刷新state状态丢失",
-      "业务区分：离线Jupyter数据分析 和 在线SQL-Agent查询服务的边界"
-    ]
+   
   },
   noteBlock:{
     kicker:"学习笔记",
-    copy:"后续存放：Dify Agent踩坑、Next开发笔记、数据分析知识点"
+    title:"数据分析 & 全栈 笔记",
+    copy:"Excel / PowerQuery / Python / SQL 与前后端开发笔记，Markdown 渲染，支持搜索与大纲",
+    linkLabel:"查看笔记",
+    href:"/notes",
   },
 
   identity: {
@@ -60,7 +58,7 @@ export const textLab = {
 
 //新增了sql页面
 export const sqlAgentLab = {
-  heroTitle: "SQL-Agent实验室",
+  heroTitle: "SQL-Agent",
   heroSubtitle: "输入自然语言，自动生成并执行SQL查询"
 };
 

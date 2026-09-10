@@ -1,3 +1,9 @@
+---
+title: 数据分析
+description: Excel 函数、PowerQuery M 语言、Python 数据清洗、SQL 语法
+order: 1
+---
+
 # 1.1 Excel基础函数&格式操作
 ### 查找匹配
 - `XLOOKUP(查找值,查找区域,返回区域,[未找到值],[匹配模式])`
@@ -171,7 +177,7 @@ def concat_data(floder_path,save_path):
     print('合并完成')
 ```
 ### 多文件夹合并
-```pyhthon
+```python
 # 合并多个文件夹下所有excel文件
 import pandas as pd
 import os

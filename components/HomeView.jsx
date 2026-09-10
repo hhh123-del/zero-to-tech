@@ -7,7 +7,6 @@
 // 注意：后端地址暂时写死在下面，跟着课件，这一节最后会把它收进 .env.local。
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Nav from "./Nav.jsx";
 import PageHeading from "./PageHeading.jsx";
 import AnimatedCardGrid from "./AnimatedCardGrid.jsx";
 import { home } from "../data/site.js";
@@ -20,7 +19,6 @@ export default function HomeView() {
   return (
     <AnimatedCardGrid className="dashboard-grid">
       <article className="hero-stage panel-full">
-        <Nav />
         <PageHeading title={data.heroTitle} subtitle={data.heroSubtitle} />
       </article>
 
@@ -59,25 +57,30 @@ export default function HomeView() {
         </a >
       </article>
       
-      {/* ========== 技术复盘模块 ========== */}
+
+      
+      {/* ========== 学习笔记模块 ========== */}
+      <article className="panel panel-full card">
+        <p className="section-kicker">{data.noteBlock.kicker}</p >
+        <h3 className="block-title">{data.noteBlock.title}</h3>
+        <p className="block-text">{data.noteBlock.copy}</p >
+        <Link className="featured-link" href={data.noteBlock.href}>
+          <span className="featured-link-label">{data.noteBlock.linkLabel}</span>
+          <span className="arrow">›</span>
+        </Link>
+      </article>
+
+            {/* ========== 技术复盘模块 ========== */}
       <article className="panel panel-full card">
         <p className="section-kicker">{data.techReview.kicker}</p >
         <h3 className="block-title">{data.techReview.title}</h3>
         <div className="block-text">
-          {data.techReview.points.map((item, i) => (
-            <p key={i}>• {item}</p >
-          ))}
+          {data.techReview.copy}
         </div>
         <Link className="featured-link" href={data.techReview.href}>
           <span className="featured-link-label">{data.techReview.linkLabel}</span>
           <span className="arrow">›</span>
         </Link>
-      </article>
-      
-      {/* ========== 学习笔记模块 ========== */}
-      <article className="panel panel-full card">
-        <p className="section-kicker">{data.noteBlock.kicker}</p >
-        <p className="block-text">{data.noteBlock.copy}</p >
       </article>
             
       

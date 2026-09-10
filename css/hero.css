@@ -26,7 +26,7 @@
 }
 
 .hero-display {
-  font-size: clamp(56px, 10vw, 96px);
+  font-size: clamp(40px, 7vw, 70px);
   line-height: 1.04;
   letter-spacing: -0.06em;
   font-weight: 600;

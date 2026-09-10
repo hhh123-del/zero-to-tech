@@ -10,8 +10,16 @@
   "dependencies": {
     "animejs": "^4.4.1",
     "echarts": "^6.1.0",
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.12.0",
     "next": "^15.0.0",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "rehype-highlight": "^7.0.2",
+    "rehype-stringify": "^10.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5"
   }
 }

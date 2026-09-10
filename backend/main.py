@@ -6,7 +6,8 @@ import httpx
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+import uuid
+from fastapi import FastAPI, HTTPException, Request, Response
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from pypinyin import lazy_pinyin, Style
@@ -31,9 +32,19 @@ app.add_middleware(
     allow_origins=["http://localhost:3000"],
      allow_methods=["GET", "POST"],
     allow_headers=["*"],
+    allow_credentials=True,
 )
 
-
+def get_session_id(request: Request, response: Response):
+    session_id = request.cookies.get("session_id")
+    if not session_id:
+        session_id = uuid.uuid4().hex
+        response.set_cookie(
+            "session_id", session_id,
+            httponly=True, samesite="lax",
+            max_age=3600 * 24 * 30
+        )
+    return session_id
 
 class AnalyzeRequest(BaseModel):
     text: str
@@ -48,7 +59,8 @@ def score_label(score):
         return "中性"
 
 @app.post("/api/analyze")
-def analyze(req: AnalyzeRequest):
+def analyze(req: AnalyzeRequest,request: Request, response: Response):
+    session_id = get_session_id(request, response)
     text = req.text
     score = round(SnowNLP(text).sentiments, 2)
     result = {
@@ -58,12 +70,14 @@ def analyze(req: AnalyzeRequest):
         "pinyin": " ".join(lazy_pinyin(text, style=Style.TONE)),
         "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),  # ← 新增
     }
-    save_record(result)                                                          # ← 存档到文件
+    save_record(session_id, result)                                              # ← 存档到文件
     return result
 
 @app.get("/api/history")
-def history():
-   return get_history(2)  # 切一刀：只留最近 10 条
+def history(request: Request, response: Response, limit: int = 10):
+    session_id = get_session_id(request, response)
+    return get_history(session_id, limit) 
+   
 
 
 # Dify Agent 在回答里会夹带一些"中间步骤"提示词（如"SQL正在生成中"），

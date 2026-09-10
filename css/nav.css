@@ -21,3 +21,22 @@
   color: var(--text-main);
   font-weight: 500;
 }
+
+/* 全站吸顶导航条（挂在 layout 的 site-header 上） */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.site-header-inner {
+  width: min(var(--maxw), calc(100% - 40px));
+  margin: 0 auto;
+}
+.site-header .hero-topline {
+  margin-bottom: 0;
+  padding: 14px 0;
+}

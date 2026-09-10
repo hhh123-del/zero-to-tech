@@ -6,7 +6,7 @@
 import { useEffect, useRef } from "react";
 import { animate, scrambleText } from "animejs";
 
-export default function ResultCard({ result }) {
+export default function ResultCard({ result,onOpenHistory }) {
   const cardRef = useRef(null);
   const scoreRef = useRef(null);
 
@@ -34,9 +34,15 @@ export default function ResultCard({ result }) {
 
   return (
     <article ref={cardRef} className="panel panel-half lab-panel result-panel card">
-      <div className="panel-heading">
-        <p className="section-kicker">结果区</p>
-        <h3>分析结果</h3>
+      <div className="panel-heading result-header-now">
+        <div>
+          <p className="section-kicker">结果区</p>
+          <h3>分析结果</h3>
+        </div>
+      {/* 这一节新增：打开历史弹窗 */}
+      <button type="button" className="ghost-button" onClick={onOpenHistory}>
+        历史记录
+      </button>
       </div>
       <div className="result-stack">
         <div className="result-item">

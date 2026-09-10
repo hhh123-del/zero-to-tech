@@ -9,7 +9,6 @@
 // 而复盘页是"文档"——正文本身就是结构（架构图、目录树、代码块），硬拆成字段反而别扭。
 // 所以这里只在 site.js 放了页面元信息（标题、GitHub 地址），正文直接写在组件里。
 
-import Nav from "./Nav.jsx";
 import PageHeading from "./PageHeading.jsx";
 import AnimatedCardGrid from "./AnimatedCardGrid.jsx";
 import { techReviewPage } from "../data/site.js";
@@ -64,7 +63,6 @@ export default function TechReviewView() {
   return (
     <AnimatedCardGrid className="dashboard-grid">
       <article className="hero-stage panel-full">
-        <Nav />
         <PageHeading
           title={techReviewPage.heroTitle}
           subtitle={techReviewPage.heroSubtitle}
