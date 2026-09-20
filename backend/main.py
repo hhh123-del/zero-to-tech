@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import json
 from storage import init_db,save_record, get_history
 import re
@@ -14,11 +15,21 @@ from pypinyin import lazy_pinyin, Style
 from snownlp import SnowNLP
 from dotenv import load_dotenv
 
+load_dotenv()                        # ← 读同目录下的 .env
+
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS").split(",")
+
+
+
 
 init_db()
-# 读取项目根目录 .env.local 里的 Dify 配置。
+# Dify 的地址和密钥统一写在根目录 .env.local；模板是 .env.example（会随项目上传）。
 # 前端「SQL-Agent实验室」的按钮现在走 FastAPI 中转，由这里代理转发到 Dify。
-load_dotenv(Path(__file__).resolve().parent.parent / ".env.local")
+# 先加载 .env.local，再用 .env.example 兜底：服务器上如果只上传了模板也能直接跑。
+# load_dotenv 默认不覆盖已存在的变量，所以 .env.local 优先级更高。
+ROOT_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(ROOT_DIR / ".env.local")
+load_dotenv(ROOT_DIR / ".env.example")
 DIFY_BASE_URL = os.getenv("DIFY_BASE_URL")
 DIFY_API_KEY = os.getenv("DIFY_API_KEY")
 
@@ -29,7 +40,7 @@ HISTORY_FILE = Path(__file__).parent / "history.json"  # 固定到 backend/ 目�
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=ALLOWED_ORIGINS,
      allow_methods=["GET", "POST"],
     allow_headers=["*"],
     allow_credentials=True,
