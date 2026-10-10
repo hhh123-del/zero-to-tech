@@ -7,42 +7,27 @@
 
 export const home = {
   heroTitle: "关于我",
-  heroSubtitle: "项目，创意，灵感，心得，我的作品",
+  heroSubtitle: "数据分析师 / 全栈学习者",
   featuredWork: {
-    kicker: "作品",
+    kicker: "项目",
     title: "文字实验室",
-    copy: "拼音和情绪，挖掘中文里的细节",
-    linkLabel: "打开作品",
+    copy: "中文情感分析与拼音标注，基于SnowNLP的文本分析小工具",
+    linkLabel: "进入项目",
     href: "/text-lab"
   },
   secondWork:{
-    kicker:"作品",
-    title:"SQL-Agent",
-    copy:"自然语言查询电商RFM数据集，AI自动生成SQL，支持图表解析",
-    linkLabel:"打开作品",
+    kicker:"项目",
+    title:"RFM用户分层分析",
+    copy:"基于1000名电商用户数据的客户价值分层模型，支持自然语言交互查询",
+    linkLabel:"进入项目",
     href:"/sql-agent-lab"
-  },
-  rfmProject:{
-    kicker:"数据分析项目",
-    title:"电商RFM用户分层分析",
-    copy:"Jupyter完成数据清洗、RFM指标计算、用户分层、假设检验，完整分析报告",
-    linkLabel:"查看报告",
-    href:"/report/rfm/README.html",
-  },
-  techReview:{
-    kicker:"技术复盘",
-    title:"Zero-to-Tech 站点整体架构",
-    copy:"Next.js前端 /API路由/前后端交互流程/遇到问题/业务区分",
-    linkLabel:"查看复盘",
-    href:"/tech-review",
-   
   },
   noteBlock:{
     kicker:"学习笔记",
-    title:"数据分析 & 全栈 笔记",
-    copy:"Excel / PowerQuery / Python / SQL 与前后端开发笔记，Markdown 渲染，支持搜索与大纲",
+    title:"数据分析 & 全栈笔记",
+    copy:"Excel / PowerQuery / Python / SQL 与前后端开发笔记，Markdown渲染，支持搜索",
     linkLabel:"查看笔记",
-    href:"/notes",
+    href:"/notes"
   },
 
   identity: {
@@ -58,8 +43,8 @@ export const textLab = {
 
 //新增了sql页面
 export const sqlAgentLab = {
-  heroTitle: "SQL-Agent",
-  heroSubtitle: "输入自然语言，自动生成并执行SQL查询"
+  heroTitle: "RFM用户分层分析",
+  heroSubtitle: "基于电商数据的客户价值分层，支持自然语言交互查询"
 };
 
 // 技术复盘页的元信息（正文在 components/TechReviewView.jsx 里）。

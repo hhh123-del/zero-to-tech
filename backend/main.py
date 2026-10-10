@@ -105,14 +105,22 @@ NOISE_HINTS = [
 
 
 def parse_answer(answer: str):
-    """把 Dify 返回的 answer 拆成「干净文字 + echarts 配置」。
+    """把 Dify 返回的 answer 拆成「干净文字 + SQL语句 + echarts 配置」。
 
-    answer 里混了过程提示词、结果文字、```echarts{...}``` 图表配置，
-    这里用正则把图表代码块抽出来，再过滤掉过程提示词，剩下干净结果。
+    answer 里混了过程提示词、SQL语句、结果文字、```echarts{...}``` 图表配置，
+    这里用正则把SQL和图表代码块抽出来，再过滤掉过程提示词，剩下干净结果。
     """
     chart = None
+    sql = None
     text = answer or ""
 
+    # 提取SQL代码块
+    sql_match = re.search(r"```sql\s*\n(.*?)```", text, re.DOTALL)
+    if sql_match:
+        sql = sql_match.group(1).strip()
+        text = text[: sql_match.start()] + text[sql_match.end():]
+
+    # 提取echarts图表配置
     m = re.search(r"```echarts\s*\n(.*?)```", text, re.DOTALL)
     if m:
         try:
@@ -126,7 +134,7 @@ def parse_answer(answer: str):
         ln for ln in lines
         if ln and not any(h.lower() in ln.lower() for h in NOISE_HINTS)
     ]
-    return "\n".join(kept).strip(), chart
+    return "\n".join(kept).strip(), sql, chart
 
 
 class SqlRequest(BaseModel):
@@ -162,7 +170,7 @@ async def sql_agent_lab(req: SqlRequest):
         raise HTTPException(status_code=500, detail=f"Dify 返回 {res.status_code}")
 
     data = res.json()
-    result_text, chart = parse_answer(data.get("answer", ""))
-    return {"result": result_text, "chart": chart}
+    result_text, sql, chart = parse_answer(data.get("answer", ""))
+    return {"result": result_text, "sql": sql, "chart": chart}
    
 

@@ -7,11 +7,13 @@ import { useState } from "react";
 const API = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function InputCard({ onResult,apiUrl }) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState("生活没有标准答案，但每一天都值得认真感受。");
   const [error, setError] = useState("");
+  const [isActive, setIsActive] = useState(false);
 
   async function handleAnalyze() {
     setError("");
+    setIsActive(true);
 
     try {
       const res = await fetch(apiUrl, {
@@ -45,9 +47,10 @@ export default function InputCard({ onResult,apiUrl }) {
         <textarea
           id="text-input"
           rows="8"
-          placeholder="例如：生活没有标准答案，但每一天都值得认真感受。"
+          placeholder=""
           value={text}
           onChange={(e) => setText(e.target.value)}
+          style={{ color: isActive ? "#000" : "#999" }}
         />
         {/* state 现身：text 一变，这行数字自动跟着变 */}
         <p className="lab-count">已输入 {text.length} 字</p>

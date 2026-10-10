@@ -2,11 +2,13 @@
 import { useState } from "react";
 
 export default function SqlInputCard({ onResult,apiUrl }) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState("统计不同区域用户的平均消费金额");
   const [error, setError] = useState("");
+  const [isActive, setIsActive] = useState(false);
 
   async function handleAnalyze() {
     setError("");
+    setIsActive(true);
 
     try {
       const res = await fetch(apiUrl, {
@@ -39,9 +41,10 @@ export default function SqlInputCard({ onResult,apiUrl }) {
         <textarea
           id="text-input"
           rows="8"
-          placeholder="例如：查询用户的性别比例。"
+          placeholder=""
           value={text}
           onChange={(e) => setText(e.target.value)}
+          style={{ color: isActive ? "#000" : "#999" }}
         />
         {/* state 现身：text 一变，这行数字自动跟着变 */}
         <p className="lab-count">已输入 {text.length} 字</p>
