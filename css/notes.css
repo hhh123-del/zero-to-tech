@@ -3,23 +3,77 @@
    两栏布局（侧栏大纲 + 正文）、固定搜索框 + 可滚动大纲、可折叠大纲树、
    以及 markdown 正文排版（标题/表格/代码块/引用）。 */
 
-/* 两栏布局：左栏大纲，右栏正文 */
+/* 两栏布局：默认只显示正文居中 */
 .notes-layout {
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
   align-items: start;
   margin-top: 28px;
+  position: relative;
 }
 
-/* 侧栏：吸顶。整体是纵向 flex——搜索框固定在顶部，大纲在下面独立滚动 */
+/* 目录切换按钮 */
+.notes-sidebar-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent, #4f46e5);
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 101;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notes-sidebar-toggle:hover {
+  opacity: 0.9;
+}
+
+/* 遮罩层 */
+.notes-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 99;
+}
+
+.notes-layout.sidebar-open .notes-overlay {
+  display: block;
+}
+
+/* 侧栏：抽屉式，从左边滑出 */
 .notes-sidebar {
-  position: sticky;
-  top: 72px; /* 让出吸顶 header 的高度 */
-  max-height: calc(100vh - 88px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 85vw;
+  background: white;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  z-index: 100;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 60px 20px 20px;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+}
+
+.notes-layout.sidebar-open .notes-sidebar {
+  transform: translateX(0);
 }
 
 .notes-search {
@@ -299,19 +353,27 @@
   margin: 24px 0;
 }
 
-/* 移动端：两栏变一栏，侧栏不再吸顶 */
-@media (max-width: 768px) {
-  .notes-layout {
-    grid-template-columns: 1fr;
-  }
-  .notes-sidebar {
-    position: static;
-    max-height: none;
-  }
-  .notes-outline {
-    overflow-y: visible;
-  }
+/* 平板/手机：正文padding缩小 */
+@media (max-width: 834px) {
   .notes-doc {
-    padding: 24px 20px;
+    padding: 16px;
+  }
+  .notes-body {
+    font-size: 15px;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  .notes-body img {
+    max-width: 100%;
+    height: auto;
+  }
+  .notes-body pre {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .notes-body table {
+    display: block;
+    overflow-x: auto;
   }
 }

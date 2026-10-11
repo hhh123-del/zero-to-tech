@@ -23,17 +23,10 @@ ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS").split(",")
 
 
 init_db()
-# Dify 的地址和密钥统一写在根目录 .env.local；模板是 .env.example（会随项目上传）。
-# 前端「SQL-Agent实验室」的按钮现在走 FastAPI 中转，由这里代理转发到 Dify。
-# 先加载 .env.local，再用 .env.example 兜底：服务器上如果只上传了模板也能直接跑。
-# load_dotenv 默认不覆盖已存在的变量，所以 .env.local 优先级更高。
-ROOT_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(ROOT_DIR / ".env.local")
-load_dotenv(ROOT_DIR / ".env.example")
-DIFY_BASE_URL = os.getenv("DIFY_BASE_URL")
-DIFY_API_KEY = os.getenv("DIFY_API_KEY")
 
-HISTORY_FILE = Path(__file__).parent / "history.json"  # 固定到 backend/ 目录，跟启动目录无关
+ROOT_DIR = Path(__file__).resolve().parent.parent
+
+HISTORY_FILE = Path(__file__).parent / "history.json"
 
 
 
@@ -141,36 +134,136 @@ class SqlRequest(BaseModel):
     prompt: str
 
 
+# RFM 数据库配置
+RFM_DB_PATH = Path(__file__).parent / "rfm.db"
+QWEN_API_KEY = "sk-ws-H.PMELYXM.PDnJ.MEYCIQC0oZpl-7joslZf61g9zxZZ_kUTgDMrkuCxIiRO1Ic-iAIhAIRo5zEett02xxHWSIoe3MX8tbui2NaQmAIED0aarNNH"
+
+TABLE_SCHEMA = """
+表名：user_personalized_features
+字段：
+- id: 用户编号
+- user_id: 用户ID
+- Age: 年龄
+- Gender: 性别（Male/Female）
+- Region: 地区（Suburban/Rural/Urban）
+- Income: 收入水平
+- Category: 偏好品类
+- Last_Login: 最近登录天数
+- Pages_Viewed: 浏览页数
+- Time_Spent: 停留时长
+- Total_Spending: 总消费金额
+- Pref_Category: 主要消费品类
+- Frequency: 购买频率
+- Avg_Order: 平均订单金额
+- Is_Active: 是否活跃
+"""
+
+SYSTEM_PROMPT = f"""你是一个SQL数据分析助手。根据用户的问题，生成SQL查询语句，并判断应该画什么类型的图表。
+
+数据库表结构：
+{TABLE_SCHEMA}
+
+要求：
+1. 只返回JSON格式，不要其他文字
+2. 格式：{{"sql": "你的SQL语句", "chart_type": "bar/line/pie", "chart_title": "图表标题", "explanation": "简短解释"}}
+3. SQL用SQLite语法
+4. chart_type只能是：bar（柱状图）、line（折线图）、pie（饼图）
+5. 对比类问题用bar，趋势类用line，占比类用pie
+
+示例：
+用户问：统计不同区域用户的平均消费金额
+返回：{{"sql": "SELECT Region, AVG(Total_Spending) as avg_spending FROM user_personalized_features GROUP BY Region", "chart_type": "bar", "chart_title": "各区域用户平均消费金额", "explanation": "柱状图对比不同区域的平均消费"}}
+"""
+
 @app.post("/api/sql-agent-lab")
 async def sql_agent_lab(req: SqlRequest):
-    if not DIFY_BASE_URL or not DIFY_API_KEY:
-        raise HTTPException(status_code=500, detail="环境变量缺失：DIFY_BASE_URL / DIFY_API_KEY")
+    import sqlite3
 
-    payload = {
-        "inputs": {},
-        "query": req.prompt,
-        "response_mode": "blocking",
-        "user": "demo-user001",
-    }
-
+    # 1. 调千问API生成SQL
     try:
-        async with httpx.AsyncClient(timeout=60) as client:
+        async with httpx.AsyncClient(timeout=30) as client:
             res = await client.post(
-                f"{DIFY_BASE_URL}/chat-messages",
+                "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
                 headers={
-                    "Authorization": f"Bearer {DIFY_API_KEY}",
+                    "Authorization": f"Bearer {QWEN_API_KEY}",
                     "Content-Type": "application/json",
                 },
-                json=payload,
+                json={
+                    "model": "qwen3.8-max",
+                    "messages": [
+                        {"role": "system", "content": SYSTEM_PROMPT},
+                        {"role": "user", "content": req.prompt}
+                    ],
+                    "temperature": 0.1
+                }
             )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"调用 Dify 失败：{e}")
+        raise HTTPException(status_code=500, detail=f"调用大模型失败：{e}")
 
     if res.status_code != 200:
-        raise HTTPException(status_code=500, detail=f"Dify 返回 {res.status_code}")
+        raise HTTPException(status_code=500, detail=f"大模型返回错误：{res.text}")
 
+    # 2. 解析千问返回
     data = res.json()
-    result_text, sql, chart = parse_answer(data.get("answer", ""))
-    return {"result": result_text, "sql": sql, "chart": chart}
+    answer = data["choices"][0]["message"]["content"]
+
+    # 提取JSON（千问可能会包在```json```里）
+    json_match = re.search(r"```json\s*\n(.*?)```", answer, re.DOTALL)
+    if json_match:
+        answer = json_match.group(1)
+
+    try:
+        llm_result = json.loads(answer)
+        sql = llm_result["sql"]
+        chart_type = llm_result.get("chart_type", "bar")
+        chart_title = llm_result.get("chart_title", "查询结果")
+        explanation = llm_result.get("explanation", "")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"解析大模型返回失败：{e}")
+
+    # 3. 执行SQL查询本地数据库
+    try:
+        conn = sqlite3.connect(RFM_DB_PATH)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
+        conn.close()
+
+        chart_data = [dict(row) for row in rows]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"SQL执行失败：{e}")
+
+    # 4. 把查询结果转成ECharts配置
+    if chart_data and len(columns) >= 2:
+        cats = [row[columns[0]] for row in chart_data]
+        vals = [row[columns[1]] for row in chart_data]
+
+        if chart_type == "pie":
+            chart_option = {
+                "title": {"text": chart_title, "left": "center"},
+                "series": [{
+                    "type": "pie",
+                    "radius": "60%",
+                    "data": [{"name": str(c), "value": v} for c, v in zip(cats, vals)]
+                }]
+            }
+        else:  # bar 或 line
+            chart_option = {
+                "title": {"text": chart_title},
+                "xAxis": {"type": "category", "data": [str(c) for c in cats]},
+                "yAxis": {"type": "value"},
+                "series": [{"type": chart_type, "data": vals}]
+            }
+    else:
+        chart_option = None
+
+    # 5. 返回结果
+    return {
+        "result": explanation,
+        "sql": sql,
+        "chart": chart_option
+    }
    
 

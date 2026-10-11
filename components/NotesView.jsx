@@ -112,6 +112,7 @@ export default function NotesView({ notes }) {
   const [query, setQuery] = useState("");
   const [pendingScroll, setPendingScroll] = useState(null);
   const [collapsed, setCollapsed] = useState(() => new Set());
+  const [showSidebar, setShowSidebar] = useState(false); // 默认收起目录
 
   const active = notes.find((n) => n.id === activeId) ?? notes[0];
   const q = query.trim().toLowerCase();
@@ -168,7 +169,19 @@ export default function NotesView({ notes }) {
         />
       </article>
 
-      <div className="notes-layout">
+      {/* 目录切换按钮 */}
+      <button
+        className="notes-sidebar-toggle"
+        onClick={() => setShowSidebar(!showSidebar)}
+        aria-label="切换目录"
+      >
+        {showSidebar ? "✕" : "☰"}
+      </button>
+
+      <div className={"notes-layout" + (showSidebar ? " sidebar-open" : "")}>
+        {/* 遮罩层 */}
+        <div className="notes-overlay" onClick={() => setShowSidebar(false)}></div>
+
         {/* 侧栏：搜索框固定在上，大纲在下面独立滚动 */}
         <aside className="notes-sidebar panel">
           <input

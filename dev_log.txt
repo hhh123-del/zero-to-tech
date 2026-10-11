@@ -77,3 +77,4 @@
  GET /sql-agent-lab 200 in 941ms
  GET / 200 in 51ms
  GET /notes 200 in 1638ms
+^C

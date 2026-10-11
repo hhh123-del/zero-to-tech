@@ -70,64 +70,68 @@ code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-fami
   .markdown-preview h4 {
     scroll-margin-top: 76px; /* 锚点跳转时给吸顶导航让位 */
   }
+  /* 目录切换按钮 */
+  .rpt-toc-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #0071e3;
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rpt-toc-toggle:hover {
+    opacity: 0.9;
+  }
+
+  /* 遮罩层 */
+  .rpt-toc-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 999;
+  }
+  .rpt-toc-overlay.open {
+    display: block;
+  }
+
+  /* 抽屉式目录 */
   .rpt-toc-dock {
     position: fixed;
     left: 0;
     top: 0;
-    height: 100%;
-    width: 320px; /* 面板展开宽度 */
-    z-index: 1500;
-    transform: translateX(calc(-100% + 14px)); /* 收起时只露出 14px 把手 */
-    transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    background: white;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
   }
-  .rpt-toc-dock:hover,
-  .rpt-toc-dock.rpt-toc-dock--pinned {
+  .rpt-toc-dock.open {
     transform: translateX(0);
   }
-  .rpt-toc-handle {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 14px;
-    height: 100%;
-    cursor: pointer;
-    border-right: 1px solid rgba(29, 29, 31, 0.08);
-    background: linear-gradient(
-      180deg,
-      rgba(29, 29, 31, 0) 0%,
-      rgba(29, 29, 31, 0.14) 50%,
-      rgba(29, 29, 31, 0) 100%
-    );
-    transition: opacity 0.2s;
-  }
-  .rpt-toc-handle::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 4px;
-    height: 44px;
-    border-radius: 2px;
-    background: rgba(29, 29, 31, 0.28);
-  }
-  .rpt-toc-dock:hover .rpt-toc-handle {
-    opacity: 0;
-  }
+
   .rpt-toc-panel {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: calc(100% - 14px);
-    box-sizing: border-box;
-    padding: 24px 14px 48px 20px;
+    flex: 1;
     overflow-y: auto;
-    background: rgba(255, 255, 255, 0.97);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    backdrop-filter: saturate(180%) blur(20px);
-    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
-    border-right: 1px solid rgba(29, 29, 31, 0.06);
+    padding: 60px 20px 20px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
       "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     font-size: 14px;
@@ -141,12 +145,25 @@ code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-fami
     background: rgba(0, 0, 0, 0.15);
     border-radius: 4px;
   }
+  .rpt-toc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
   .rpt-toc-title {
     font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.08em;
     color: rgba(29, 29, 31, 0.45);
-    margin: 0 0 12px 4px;
+  }
+  .rpt-toc-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgba(29, 29, 31, 0.45);
+    padding: 4px 8px;
   }
   .rpt-toc-list {
     list-style: none;
@@ -188,9 +205,4 @@ code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-fami
     border-left-color: #0071e3;
     background: rgba(0, 113, 227, 0.06);
     font-weight: 600;
-  }
-  @media (max-width: 640px) {
-    .rpt-toc-dock {
-      width: 280px;
-    }
   }

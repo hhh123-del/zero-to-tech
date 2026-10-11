@@ -1,4 +1,4 @@
-// 左侧悬浮目录大纲：扫描正文标题生成目录，鼠标移到左边缘自动展开。
+// 左侧悬浮目录大纲：扫描正文标题生成目录，左下角按钮点击展开抽屉式目录。
 (function () {
   function initToc() {
     var container = document.querySelector('.markdown-preview');
@@ -14,14 +14,27 @@
       if (!h.id) h.id = 'rpt-toc-' + i;
     });
 
+    // 切换按钮
+    var toggle = document.createElement('button');
+    toggle.className = 'rpt-toc-toggle';
+    toggle.textContent = '☰';
+    toggle.setAttribute('aria-label', '目录');
+
+    // 遮罩层
+    var overlay = document.createElement('div');
+    overlay.className = 'rpt-toc-overlay';
+
+    // 抽屉式目录
     var dock = document.createElement('div');
     dock.className = 'rpt-toc-dock';
     dock.innerHTML =
       '<div class="rpt-toc-panel">' +
-        '<div class="rpt-toc-title">目录</div>' +
+        '<div class="rpt-toc-header">' +
+          '<span class="rpt-toc-title">目录</span>' +
+          '<button class="rpt-toc-close">✕</button>' +
+        '</div>' +
         '<ul class="rpt-toc-list"></ul>' +
-      '</div>' +
-      '<div class="rpt-toc-handle" title="目录大纲"></div>';
+      '</div>';
 
     var list = dock.querySelector('.rpt-toc-list');
     var links = [];
@@ -36,23 +49,39 @@
       a.addEventListener('click', function (e) {
         e.preventDefault();
         h.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        if (window.innerWidth <= 640) {
-          dock.classList.remove('rpt-toc-dock--pinned');
-        }
+        closeDock();
       });
       li.appendChild(a);
       list.appendChild(li);
       links.push(a);
     });
 
+    document.body.appendChild(toggle);
+    document.body.appendChild(overlay);
     document.body.appendChild(dock);
 
-    // 点击把手可固定展开/收起（触屏也靠它）。
-    dock
-      .querySelector('.rpt-toc-handle')
-      .addEventListener('click', function () {
-        dock.classList.toggle('rpt-toc-dock--pinned');
-      });
+    function openDock() {
+      dock.classList.add('open');
+      overlay.classList.add('open');
+      toggle.textContent = '✕';
+    }
+
+    function closeDock() {
+      dock.classList.remove('open');
+      overlay.classList.remove('open');
+      toggle.textContent = '☰';
+    }
+
+    toggle.addEventListener('click', function () {
+      if (dock.classList.contains('open')) {
+        closeDock();
+      } else {
+        openDock();
+      }
+    });
+
+    overlay.addEventListener('click', closeDock);
+    dock.querySelector('.rpt-toc-close').addEventListener('click', closeDock);
 
     // scrollspy：滚动时高亮当前章节。
     var linkByHeading = {};

@@ -6,21 +6,25 @@
 import { useState } from "react";
 const API = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+const DEFAULT_TEXT = "生活没有标准答案，但每一天都值得认真感受。";
+
 export default function InputCard({ onResult,apiUrl }) {
-  const [text, setText] = useState("生活没有标准答案，但每一天都值得认真感受。");
+  const [text, setText] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const [error, setError] = useState("");
   const [isActive, setIsActive] = useState(false);
 
   async function handleAnalyze() {
     setError("");
     setIsActive(true);
+    const finalText = text.trim() || DEFAULT_TEXT;
 
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ text: text }),
+        body: JSON.stringify({ text: finalText }),
       });
 
       if (!res.ok) {
@@ -47,13 +51,14 @@ export default function InputCard({ onResult,apiUrl }) {
         <textarea
           id="text-input"
           rows="8"
-          placeholder=""
+          placeholder={DEFAULT_TEXT}
           value={text}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           onChange={(e) => setText(e.target.value)}
-          style={{ color: isActive ? "#000" : "#999" }}
+          style={{ color: text ? "#000" : "#999" }}
         />
-        {/* state 现身：text 一变，这行数字自动跟着变 */}
-        <p className="lab-count">已输入 {text.length} 字</p>
+        <p className="lab-count">已输入 {(text || DEFAULT_TEXT).length} 字</p>
         {error && <p className="lab-error">{error}</p>}
         <button className="primary-button" type="button" onClick={handleAnalyze}>
           开始分析
