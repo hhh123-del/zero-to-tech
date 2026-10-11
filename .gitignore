@@ -23,3 +23,7 @@ backend/.venv/
 backend/__pycache__/
 *.pyc
 backend/*.db
+
+deploy_server.py
+fix_server.py
+upload_data.py
