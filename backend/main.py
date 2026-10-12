@@ -136,7 +136,7 @@ class SqlRequest(BaseModel):
 
 # RFM 数据库配置
 RFM_DB_PATH = Path(__file__).parent / "rfm.db"
-QWEN_API_KEY = "sk-ws-H.PMELYXM.PDnJ.MEYCIQC0oZpl-7joslZf61g9zxZZ_kUTgDMrkuCxIiRO1Ic-iAIhAIRo5zEett02xxHWSIoe3MX8tbui2NaQmAIED0aarNNH"
+QWEN_API_KEY = os.getenv("QWEN_API_KEY")
 
 TABLE_SCHEMA = """
 表名：user_personalized_features

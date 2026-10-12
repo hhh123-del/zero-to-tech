@@ -27,3 +27,11 @@ backend/*.db
 deploy_server.py
 fix_server.py
 upload_data.py
+check_server.py
+read_pdf.py
+create_resume.py
+gen_qr.py
+resume_content.txt
+template_content.txt
+肖盈_数据分析简历.docx
+zero-to-tech-qrcode.png
