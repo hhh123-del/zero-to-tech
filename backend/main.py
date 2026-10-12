@@ -15,7 +15,7 @@ from pypinyin import lazy_pinyin, Style
 from snownlp import SnowNLP
 from dotenv import load_dotenv
 
-load_dotenv()                        # ← 读同目录下的 .env
+load_dotenv()                        # ← 读同目录下的 .env，读配置文件
 
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS").split(",")
 
