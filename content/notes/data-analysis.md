@@ -59,11 +59,11 @@ order: 1
 - 用户分层统计、多维度汇总、时间趋势聚合、交叉维度分析
 >注意：透视表的重复标签不是合并单元格，**不能做拆分单元格操作**；如需手动编辑，复制后选择性粘贴为【值】转为普通表格。
 
-
+---
 # 1.2 PowerQuery M语言
 M三大核心容器：**Table(表)、List(列表)、Record(记录)**
 
-## Table 表
+## 一、Table 表
 ### 容器互相转换
 - 表 ➜ 列表：`Table.ToList(表)`
 - 表 ➜ 记录（取第一行）：`Table.ToRecord(表)`
@@ -89,8 +89,8 @@ M三大核心容器：**Table(表)、List(列表)、Record(记录)**
 - 多表合并：`Table.Combine({表1,表2})`
 - 分组聚合：`Table.Group(表,{"分组字段"},{{"输出列",each 聚合(_)}})`
 - 跳过表前N行：`Table.Skip(表, 行数)`
-
-## List 列表
+---
+## 二、List 列表
 ### 容器互相转换
 - 列表 ➜ 表：`Table.FromList(列表)`
 - 列表 ➜ 记录：`Record.FromList(列表,{"字段1","字段2"})`
@@ -112,8 +112,8 @@ M三大核心容器：**Table(表)、List(列表)、Record(记录)**
 - 文本筛选：`List.Select(列表, each Text.Contains(_,"关键词"))`
 - 删除空值：`List.RemoveNulls(列表)`
 - 列表排序：`List.Sort(列表, Order.Ascending)`
-
-## Record 记录（键值对）
+---
+## 三、Record 记录（键值对）
 ### 容器互相转换
 - 记录 ➜ 表：`Table.FromRecords({记录})`
 - 记录 ➜ 列表：`Record.ToList(记录)`
@@ -123,8 +123,8 @@ M三大核心容器：**Table(表)、List(列表)、Record(记录)**
 ### 获取元素
 - 简写取值：`记录[字段名]`
 - 函数取值：`Record.Field(记录,"字段名")`
-
-## 通用语法（不属于某一个容器）
+---
+## 四、通用语法（不属于某一个容器）
 ### 条件语句
 ```powerquery
 if 条件 then 结果1 else 结果2
@@ -155,9 +155,9 @@ FileList = Folder.Files("文件夹路径"),
 TableList = List.Transform(FileList[Content], each Excel.Workbook(_,true)[Data]{0}),
 CombineAll = Table.Combine(TableList)
 ```
-
+---
 # 1.3 python数据清洗基本语法
-## 自动化合并表
+## 一、自动化合并表
 
 ### 多个Excel合并
 ```python
@@ -197,8 +197,8 @@ def concat_data(floder_path,save_path)
     df_final.to_excel(rf"(save_path)\自动化合并结果.xlsx", index=False)
     print('合并完成')  
 ```
-
-## 数据清洗常用语法
+---
+## 二、数据清洗常用语法
 ```python
 #导入常用的数据清洗库
 import pandas as pd
@@ -318,7 +318,8 @@ step3 describe()
 step4 value_counts()
 step5 drop_duplicates()
 ```
-## 数据可视化常用语法
+---
+## 三、数据可视化常用语法
 ```python
 #导入常用可视化库 
 import matplotlib.pyplot as plt
@@ -334,7 +335,7 @@ plt.rcParams["axes.unicode_minus"] = False
 # seaborn画布风格
 sns.set_style("whitegrid") 
 ```
-### 创建画布
+### 1.创建画布
 ```python
 # 方式1：简单画布（单图）
 plt.figure(figsize=(【宽】,【高】), dpi=【分辨率】)
@@ -345,7 +346,8 @@ fig, axes = plt.subplots(nrows=【行数】, ncols=【列数】, figsize=(【宽
 # 示例：2行2列画布
 fig, axes = plt.subplots(2,2, figsize=(12,8), dpi=100)
 ```
-### 常用统计图
+---
+### 2.常用统计图
 #### 条形图 barplot（均值柱状图，seaborn） 
 ```python
 # 基础
@@ -448,7 +450,8 @@ ax.plot(theta, data[0])
 ax.fill(theta, data[0], alpha=0.25)
 ax.set_varlabels(["维度1","维度2","维度3","维度4","维度5"])
 ```
-### 画布修饰（标题、坐标轴、刻度、图例） 
+---
+### 3.画布修饰（标题、坐标轴、刻度、图例） 
 > ***注意***：如果是子图axes，用 ax.set_xxx()；单图用plt.xxx()
 
 #### 标题
@@ -495,9 +498,10 @@ plt.savefig("【保存文件名.png】", dpi=300, bbox_inches="tight")
 # bbox_inches="tight" 自动裁剪多余空白
 plt.show()
 ```
+---
 # 1.4 SQL语法
 
-### 常用语法
+## 一、常用语法
 ```sql
 CREATE TABLE 【表名】(
     【字段名1】 【字段类型】,
@@ -507,7 +511,7 @@ INSERT INTO 【表名】(【字段1】,【字段2】) VALUES (【值1】,【值2
 DELETE FROM 【表名】 WHERE 【条件】;
 SELECT 【字段1】  FROM 【表名】 WHERE 【条件】;
 ```
-### 查询语法
+#### 查询语法
 >***查询顺序***：select→ over() → from → where → group by → having → order by → limit 
 ***执行顺序***：from → where → group by → having → select → over()→ order by → limit  
 ```sql
@@ -556,7 +560,7 @@ FROM 【表名】
 GROUP BY 【分组字段】
 HAVING AVG(【字段】) > 【阈值】;
 ```
-### 多表连接 JOIN 
+#### 多表连接 JOIN 
 ```sql
 -- 内连接 inner join：只保留两边匹配的数据
 SELECT 【字段】 
@@ -573,7 +577,8 @@ SELECT 【字段】
 FROM 【表1】
 RIGHT JOIN 【表2】 ON 【表1.字段】 = 【表2.字段】;
 ```
-### 常用函数
+---
+## 二、常用函数
 
 #### 数值函数
 ```sql
@@ -618,7 +623,8 @@ DATE_SUB(日期,INTERVAL 数值 单位) --日期减
 DATE_FORMAT(日期,格式) --日期格式化
 --格式符：%Y年 %m月 %d日 %H(24小时) %i分钟 %s秒
 ```
-### 窗口函数（over()） 
+---
+## 三、窗口函数（over()） 
 - 窗口函数：不会合并行，保留原始每一行；over()定义窗口范围
 - 语法：函数() OVER(PARTITION BY 【分组字段】 ORDER BY 【排序字段】)
 

@@ -264,6 +264,28 @@
   color: var(--text-soft);
 }
 
+/* ===== 公式 ===== */
+/* 行内公式里的分式/求和会被自动补 \displaystyle（见 lib/notes.js），
+   公式因此比正文高，含公式的段落行距跟着放开，否则上下两行会贴住。 */
+.notes-body p:has(.katex),
+.notes-body li:has(.katex),
+.notes-body td:has(.katex) {
+  line-height: 2.05;
+}
+
+/* 块级公式两侧留白；超宽时横向滚动，不撑破卡片 */
+.notes-body .katex-display {
+  margin: 16px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+
+/* 不要改 .katex 的 font-size。
+   KaTeX 内部所有上下标偏移、分数线粗细、括号伸缩都是按它自己的 1.21em 基准算出来的 em 值，
+   把它压到 1.05em 后，script 级字符只剩 11px 左右，上下标会显得又小又散 —— 
+   这就是"有上下标的公式不协调"的根源。想整体调大小，改 .notes-body 的 font-size。 */
+
 .notes-body ul,
 .notes-body ol {
   margin: 8px 0;
