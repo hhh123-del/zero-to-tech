@@ -1,80 +1,364 @@
+=====CELL=====
+df=pd.read_csv(r"E:/jupyterÏîÄ¿Á·Ï°/RFM-RFIÓÃ»§¼ÛÖµ·Ö²ãÓëROIÓÅ»¯/user_personalized_features.csv")
+print(df.head())
+=====CELL=====
+#(1)ÌáÈ¡RFMÈı¸öºËĞÄÖ¸±ê
+rfm_df=df[['User_ID','Last_Login_Days_Ago','Purchase_Frequency','Total_Spending']]
+rfm_df.columns=['User_ID','R','F','M']
+#(2)¢ÙÍ¨¹ı¹¹ÔìµÄÒâÏò¶ÈInterest¹«Ê½£¬µÃµ½ÆäÊıÖµ·¶Î§
+#×ÛºÏ¿¼ÂÇÈıÖÖÇé¿ö£»µÚÒ»ÖÖÊ¹ÓÃÄ¬ÈÏ¹«Ê½½øĞĞ¼ÆËã£»
+#µÚ¶şÖÖËùÓĞÖµ¶¼Ò»Ñù£¬Ö±½Ó¸ø50·Ö£»µÚÈıÖÖ·´Ïò¼ÆËã£¬ÊıÖµÔ½´ó£¬ĞËÈ¤¶ÈÔ½µÍ
+def min_max_normalize(series,reverse=False):
+        min_val,max_val=series.min(),series.max()
+        if max_val==min_val:
+            return pd.Series([50]*len(series))
+        if reverse:
+            return ((max_val-series)/(max_val-min_val))*100
+        return ((series-min_val)/(max_val-min_val))*100
+df['Time_Spent_Norm']=min_max_normalize(df['Time_Spent_on_Site_Minutes'])#Í£ÁôÊ±³¤
+df['Pages_Viewed_Norm'] = min_max_normalize(df['Pages_Viewed'])#ä¯ÀÀµÄÒ³ÃæÊıÁ¿
+df['Satisfaction']=0.5*df['Time_Spent_Norm']+0.5*df['Pages_Viewed_Norm']
+#(3)¢Ú×ª»¯Ä¦²ÁÏµÊıFrictionµÄ¼ÆËã¹«Ê½
+df['Friction']=df['Pages_Viewed']/(df['Purchase_Frequency']+1)
+#(4)¢Û»îÔ¾¶ÈÁ´½ÓLoyalityµÄ¼ÆËã¹«Ê½
+def calculate_loyalty(row):
+        subscribed=row['Newsletter_Subscription']
+        login_days=row['Last_Login_Days_Ago']
+        #¶©ÔÄÇÒ7ÌìÄÚµÇÂ¼
+        if subscribed and login_days<7:
+            return 3
+        #Î´¶©ÔÄµ«7ÌìÄÚµÇÂ¼
+        elif not subscribed and login_days<7:
+            return 2
+        #¶©ÔÄµ«7ÌìÒÔÉÏÎ´µÇÂ¼ºÍÎ´¶©ÔÄµ«7ÌìÒÔÉÏÎ´µÇÂ¼
+        else:
+            return 1
+df['loyalty_score']=df.apply(calculate_loyalty,axis=1)
+#(5)¢Ü¸¨Öú·Ö²ã,½«ÊÕÈë·ÖÎªÁËÈı¸öÀà±ğ£¬ÊÕÈëµÄ33%·ÖÎ»ÊıºÍ66%·ÖÎ»Êı×÷Îª·Ö½çµã£¬·Ö±ğÎªµÍÊÕÈë¡¢ÖĞµÈÊÕÈëºÍ¸ßÊÕÈë
+df['Income_Level']=pd.qcut(df['Income'],q=3,labels=['Low','Medium','High'])
+#(6)¢İĞËÈ¤Æ¥Åä¶ÈInterest_MatchµÄ¼ÆËã¹«Ê½
+df['Interest_Match']=(df['Interests']==df['Product_Category_Preference']).astype(int)
+#(7)»ã×ÜÒÔÉÏ·ÖÎö½á¹û
+print(f"Satisfaction·¶Î§£º[{df['Satisfaction'].min():.2f},{df['Satisfaction'].max():.2f}]")
+print(f"Friction ·¶Î§: [{df['Friction'].min():.2f}, {df['Friction'].max():.2f}]")
+print(f"Loyalty_Score ·Ö²¼: {df['loyalty_score'].value_counts().to_dict()}")
+print(f"Income_Level ·Ö²¼: {df['Income_Level'].value_counts().to_dict()}")
+print(f"Interest_Match Æ¥ÅäÂÊ: {df['Interest_Match'].mean()*100:.1f}%")
+df[['User_ID','Satisfaction','Friction','loyalty_score','Income_Level','Interest_Match']].head()
 
-> zero-to-tech-4-5@0.1.0 dev
-> next dev
+=====CELL=====
+#(1)´´½¨Ò»¸ö¶ş³Ë¶şµÄ»­²¼
+fig,axes=plt.subplots(2,2,figsize=(12,10))
+#(2)¢Ù»æÖÆ×ÜÏû·ÑµÄÖ±·½Í¼,²¢±ê³öÖĞÎ»ÊıµÄÎ»ÖÃ
+sns.histplot(df['Total_Spending'], bins=50, edgecolor='black',alpha=0.5,color='skyblue', ax=axes[0,0])
+axes[0,0].set_title('Total Spending Distribution', fontsize=14)
+axes[0,0].set_xlabel('Total Spending', fontsize=12)
+axes[0,0].set_ylabel('Count', fontsize=12)
+axes[0,0].axvline(df['Total_Spending'].median(), color='red', linestyle='--', label=f'Median: {df["Total_Spending"].median():.0f}')
+axes[0,0].legend()
+#(3)¢Ú»æÖÆÉ¢µãÍ¼,²é¿´²»Í¬ÊÕÈëÈºÌåµÄÏû·ÑÇé¿ö
+color_map={'Low':'green','Medium':'blue','High':'orange'}
+sns.scatterplot(x=df['Income'],y=df['Total_Spending'],hue=df['Income_Level'],palette=color_map,alpha=0.7,ax=axes[0,1])
+axes[0,1].set_title('Income vs Total Spending', fontsize=14)
+axes[0,1].set_xlabel('Income', fontsize=12)
+axes[0,1].set_ylabel('Total Spending', fontsize=12)
+axes[0,1].legend(title='Income Level')
+sns.regplot(data=df,x='Income',y='Total_Spending',scatter=False,color='red',ax=axes[0,1])#»Ø¹éÇ÷ÊÆÏß
+#(4)¢Û»æÖÆ¾àÀë½ñÌìµÇÂ¼ÌìÊıºÍÊÇ·ñ¶©ÔÄµÄÏäÏßÍ¼
+sns.boxplot(data=df, x='Newsletter_Subscription', y='Last_Login_Days_Ago', ax=axes[1,0],color='lightblue')
+axes[1,0].set_title('Last Login Days by Subscription Status', fontsize=14)
+axes[1,0].set_xlabel('Newsletter Subscription', fontsize=12)
+axes[1,0].set_ylabel('Last Login Days Ago', fontsize=12)
+#(5)¢Ü»æÖÆsatisficationµÄÖ±·½Í¼
+sns.histplot(df['Satisfaction'], bins=30, edgecolor='black',alpha=0.7,color='skyblue',kde=True,line_kws={'color':'darkred'}, ax=axes[1,1])
+axes[1,1].set_title('Satisfaction Distribution', fontsize=14)
+axes[1,1].set_xlabel('Satisfaction', fontsize=12)
+axes[1,1].set_ylabel('Frequency', fontsize=12)
+plt.savefig('ÓÃ»§¹Ø¼üÌØÕ÷·ÖÎö.png',dpi=300)
+#(6)¢İ»æÖÆÈı¸öÎ¬¶È½»²æ±äÁ¿¹ØÏµµÄÈÈÁ¦Í¼
+numeric_cols=['Age','Income','Last_Login_Days_Ago','Purchase_Frequency','Average_Order_Value','Total_Spending','Time_Spent_on_Site_Minutes','Pages_Viewed','Satisfaction','Friction']
+fig,ax=plt.subplots(figsize=(10,8))
+sns.heatmap(df[numeric_cols].corr(), annot=True, cmap='coolwarm', center=0, ax=ax)
+ax.set_xticklabels(numeric_cols, rotation=45, ha='right', fontsize=9)
+ax.set_yticklabels(numeric_cols, fontsize=9)
+ax.set_title('Feature Correlation Matrix', fontsize=14)
+plt.savefig('ÌØÕ÷Ïà¹ØĞÔ¾ØÕó.png', dpi=300)
+#(7)¢ŞÌôÑ¡³öÀ´¸ßÄ¦²ÁÓÃ»§·ÖÎöËûÃÇµÄä¯ÀÀÒ³Êı¡¢¹ºÂòÆµ´Î¡¢Ïû·Ñ½ğ¶îÇé¿ö
+high_friction=df[df['Friction']>df['Friction'].quantile(0.75)]
+print('\n¸ßÄ¦²ÁÓÃ»§·ÖÎö')
+print(f'¸ßÄ¦²ÁÓÃ»§ÊıÁ¿: {len(high_friction)}')
+print(f"1.Æ½¾ùä¯ÀÀÒ³Êı£º{high_friction['Pages_Viewed'].mean():.1f}")
+print(f"2.Æ½¾ù¹ºÂòÆµ´Î£º{high_friction['Purchase_Frequency'].mean():.1f}")
+print(f"3.Æ½¾ùÏû·Ñ½ğ¶î£º{high_friction['Total_Spending'].mean():.0f}")
+#(8)¢ß¸ßÊÕÈëµÍÏû·ÑÈºÌå·ÖÎö
+high_income_low_spend=df[(df['Income_Level']=='High') & (df['Total_Spending']<df['Total_Spending'].median())]
+print('\n¸ßÊÕÈëµÍÏû·ÑÈºÌå·ÖÎö')
+print(f'¸ßÊÕÈëµÍÏû·ÑÓÃ»§ÊıÁ¿: {len(high_income_low_spend)}')
+print(f"Õ¼¸ßÊÕÈëÈºÌåµÄ±ÈÀı£º{len(high_income_low_spend)/len(df[df['Income_Level']=='High'])*100:.1f}%")
+=====CELL=====
+#£¨1£©ÌáÈ¡´«Í³RFMÄ£ĞÍµÄºËĞÄÖ¸±ê¼°¶¨ÒåµÄĞËÈ¤¶ÈSatisfactionÖ¸±ê½øĞĞ¹éÒ»»¯²Ù×÷
+#¹éÒ»»¯º¯Êı,°ÑÈÎÒâÒ»ÁĞÊı¾İËõ·Åµ½0-100µÄ·¶Î§
+def min_max_normalize(series, reverse=False):#Ä¬ÈÏ²»·´×ª£¬Ô½´óÔ½ºÃ
+    min_val, max_val = series.min(), series.max()
+    if max_val == min_val:
+        return pd.Series([50] * len(series))#ÖĞ¼ä·Ö50£¬²»Æ«¸ßÒ²²»Æ«µÍ£¬·ÀÖ¹·ÖÄ¸ÎªÁã
+    if reverse:#Èç¹û·´×ªÁË¾ÍÊÇÔ½Ğ¡Ô½ºÃ£¬µ«ÕâÀïÃ»ÓÃµ½£¨false£©£¬ºÃ´¦¿ÉÒÔÍ¬Ê±Ê¹ÓÃÁ½¸öº¯Êı
+        return ((max_val - series) / (max_val - min_val)) * 100
+    return ((series - min_val) / (max_val - min_val)) * 100
+#¢ÙÔ­Ê¼RFMÄ£ĞÍµÄ¼ÆËã¹«Ê½
+df['R_Score'] = min_max_normalize(df['Last_Login_Days_Ago'], reverse=True)
+df['F_Score'] = min_max_normalize(df['Purchase_Frequency'])
+df['M_Score'] = min_max_normalize(df['Total_Spending'])
+df['RFM_Score'] = 0.2 * df['R_Score'] + 0.3 * df['F_Score'] + 0.5 * df['M_Score']
+#¢ÚÌí¼ÓĞËÈ¤¶ÈSatisfactionµÄ¼ÆËã¹«Ê½
+df['I_Weight'] = df['Satisfaction'] / 500  # ½«ĞËÈ¤¶ÈSatisfactionµÄ·¶Î§Ëõ·Åµ½0-0.2Ö®¼ä£¬×÷ÎªÈ¨ÖØ
+df['Final_Score'] = df['RFM_Score'] * (1 + df['I_Weight'])
+#¢ÛÊä³ö¸÷Ö¸±ê¹éÒ»»¯ºóµÄ½á¹û
+print(f"R_score·¶Î§: [{df['R_Score'].min():.2f}, {df['R_Score'].max():.2f}]")
+print(f"F_score·¶Î§: [{df['F_Score'].min():.2f}, {df['F_Score'].max():.2f}]")
+print(f"M_score·¶Î§: [{df['M_Score'].min():.2f}, {df['M_Score'].max():.2f}]")
+print(f"RFM_Score·¶Î§: [{df['RFM_Score'].min():.2f}, {df['RFM_Score'].max():.2f}]")
+print(f"Final_Score·¶Î§: [{df['Final_Score'].min():.2f}, {df['Final_Score'].max():.2f}]")
+=====CELL=====
+#£¨2£©ÓÃ»§·Ö²ã»­Ïñ·ÖÎö
+#¢ÙÀûÓÃ¹éÒ»»¯ÕûÀíºóµÄÊı¾İ£¬½«ÓÃ»§½øĞĞ·ÖÀàÍ³¼Æ£¨·Ö±ğ°´ÕÕ´«Í³RFMºÍ¸Ä½øºóµÄ£©
+def classify_users(row):
+    r = row['R_Score']
+    f = row['F_Score']
+    m = row['M_Score']
+    s = row['Satisfaction']
+    income = row['Income_Level']
+    friction = row['Friction']
+    l = row['loyalty_score']
+    #´«Í³RFM·Ö²ãµÄÂß¼­
+    if  r > 60 and f > 60 and m > 60:
+        base_label = "Important Value Users"#ÖØÒª¼ÛÖµÓÃ»§
+    elif r > 60 and m > 60 and f < 40:
+        base_label = "Important Development Users"#ÖØÒª·¢Õ¹ÓÃ»§
+    elif r < 40 and f > 60 and m > 60:
+        base_label = "Important Retention Users"#ÖØÒª±£³ÖÓÃ»§
+    elif r < 40 and m > 60:
+        base_label = "Important Win-Back Users"#ÖØÒªÍìÁôÓÃ»§
+    elif r > 60 and f > 40 and m < 40:
+        base_label = "General Development Users"#Ò»°ã·¢Õ¹ÓÃ»§
+    elif r > 60 and f < 40 and m < 40:
+        base_label = "General Maintenance Users"#Ò»°ãÎ¬³ÖÓÃ»§
+    elif r < 40 and f < 40 and m < 40:
+            base_label = "Low-Value Users"#µÍ¼ÛÖµÓÃ»§
+    else:
+        base_label = "General Users"#Ò»°ãÓÃ»§   
+    #ĞŞÕıºóµÄÖ¸±êÅĞ¶Ï£¨Ô½ÈİÒ×ÎóÅĞµÄÓÅÏÈ·Åµ½Ç°Ãæ£©
+    if base_label in ["Low-Value Users", "General Maintenance Users"] and income == "High" and s > 60:
+        return "High-Potential Sleeping Users"#¸ßÇ±³ÁË¯ÓÃ»§£¨rfm¶¼Ğ¡£¬r´ófmĞ¡µ«ÕâÁ½ÀàÊÕÈë¸ßÒâÏò¶È¸ß£©
+    if income == "High" and s > 70 and f < 40 and m < 50:
+        return "High-Spending Hesitant Users"#¾À½áÍÁºÀ£¨¸ßÊÕÈë¸ßÒâÏòµ«¹ºÂòÆµÂÊºÍ½ğ¶îµÍ£©
+    if base_label in ["General Maintenance Users", "General Development Users"] and s > 80 and friction > df['Friction'].quantile(0.6):
+        return "Potential Hesitant Users"#ÓÌÔ¥ĞÍÇ±Á¦ÓÃ»§£¨r´ófmĞ¡£¬rf´óĞ¡£¬ÒâÏò¶È¸ßºÜ¾À½á£©
+    if income == "Low" and s > 70 and f < 40:
+        return "Invisible Active Users"#ÒşĞÎ»îÔ¾Õß£¨ÊÕÈëµÍ£¬ÒâÏò¶È¸ß¹ºÂòÆµÂÊµÍ£©
+    if income == "High" and r < 40 and m > 50:
+        return "High-Potential At-Risk Users"#¸ßÇ±Á÷Ê§¿Í£¨¸ßÊÕÈë³¤Ê±¼ä²»µÇ»¨Ç®¶à£©
+    if m > 70 and f > 70 and s > 60:
+        return "Core VIP Users"#ºËĞÄVIP(»¨Ç®¶à¹ºÂò´ÎÊı¶àÒâÏò¶È¸ß)
+    if income == "Low" and s < 40 and m < 40:     
+        return "Penny Pinchers / Low-Value Users"#ÑòÃ«µ³/µÍÖµ£¨ÊÕÈëµÍÒâÏò¸ß»¨Ç®ÉÙ£©
+    return base_label
+#¢Úµ÷ÓÃº¯Êı½øĞĞ·Ö²ãÍ³¼Æ£¬ÓÃÊı¾İÕ¹Ê¾ÓÃ»§ĞÎÏó
+df['User_Segment']=df.apply(classify_users,axis=1)
+segment_stats=df.groupby('User_Segment').agg({'User_ID':'count','Total_Spending': 'mean','Purchase_Frequency': 'mean','Satisfaction': 'mean','Income': 'mean','Final_Score': 'mean'}).round(2)
+segment_stats.columns = ['ÓÃ»§Êı', 'Æ½¾ùÏû·Ñ', 'Æ½¾ù¹ºÂòÆµÂÊ', 'Æ½¾ùÒâÏò·Ö', 'Æ½¾ùÊÕÈë', 'Æ½¾ù×ÛºÏ·Ö']
+segment_stats['Õ¼±È(%)'] = (segment_stats['ÓÃ»§Êı'] / len(df) * 100).round(1)
+segment_stats = segment_stats.sort_values('ÓÃ»§Êı', ascending=False)
+#¢ÛÊı¾İ¿ÉÊÓ»¯Õ¹Ê¾
+print("/nÓÃ»§Í³¼Æ·ÖÎö")
+print(segment_stats)
+segment_stats.to_csv(f"E:/jupyterÏîÄ¿Á·Ï°/RFM-RFIÓÃ»§¼ÛÖµ·Ö²ãÓëROIÓÅ»¯/segment_stats.csv", encoding='utf-8-sig')  
+=====CELL=====
+#(4.3)ÓÃ»§»­Ïñ¿ÉÊÓ»¯·ÖÎö£¨Éú³ÉÀ×´ïÍ¼ºÍ·Ö²¼Öù×´Í¼£©
+#·Ö²ãÀ×´ïÍ¼
+segments=df['User_Segment'].unique()#È¥ÖØ£¬ÕÒ²»ÖØ¸´µÄ
+metrics=['R_Score','F_Score','M_Score','Satisfaction']
+#¼ÆËãÃ¿¸ö·Ö²ãµÄÖ¸±ê¾ùÖµ
+segment_means=df.groupby('User_Segment')[metrics].mean()
+#¢Ù»æÖÆ·Ö²ãÀ×´ïÍ¼£¨¼«×ø±êÍ¼£©
+fig,axes=plt.subplots(2,4,figsize=(16,8),subplot_kw={'projection':'polar'})
+axes=axes.flatten()#°Ñ2*4µÄ¶şÎ¬Êı×é×ª»»Îª1*8µÄÒ»Î¬Êı×é
+#¼ÆËãÀ×´ïÍ¼½Ç¶È£¨metricsÓĞ4¸öÖ¸±ê£¬À×´ïÍ¼ĞèÒª°Ñ4¸öµã¾ùÔÈ·Ö²¼ÔÚÔ²ÖÜÉÏ£©
+angles = np.linspace(0, 2 * np.pi, len(metrics), endpoint=False).tolist()#0µ½2piÖ®¼ä¾ùÔÈ·Ö²¼4¸öµã£¬ÎŞÖÕµã£¬Êı×é×ªÁĞ±í
+angles += angles[:1]#×·¼ÓµÚÒ»¸ö½Ç¶ÈÊµÏÖÀ×´ïÍ¼±ÕºÏ[0,90,180,270,0]
+#Ñ­»·»æÖÆÃ¿¸ö·Ö²ãµÄÀ×´ïÍ¼
+for idx, segment in enumerate(segments[:8]):
+        if idx >= len(axes):
+            break
+        ax = axes[idx]
+        #ÌáÈ¡µ±Ç°·Ö²ãµÄÖ¸±êÖµ£¬±ÕºÏÍ¼ĞÎ
+        values = segment_means.loc[segment].tolist()
+        values += values[:1]
+        ax.fill(angles, values, alpha=0.3, color=sns.color_palette()[idx % len(sns.color_palette())])
+        ax.plot(angles, values, 'o-', color=sns.color_palette()[idx % len(sns.color_palette())], linewidth=2)
+        ax.set_xticks(angles[:-1])#È¥µôÖØ¸´µÄ×îºóÒ»¸ö½Ç¶È
+        ax.set_xticklabels(['R', 'F', 'M', 'I'], fontsize=10)
+        ax.set_title(segment, fontsize=10, pad=10)
+        ax.grid(True,alpha=0.3)
+#Òş²ØÎ´Ê¹ÓÃµÄ×ÓÍ¼
+for idx in range(len(segments), len(axes)):
+    axes[idx].set_visible(False)
+plt.tight_layout()
+plt.savefig('E:/jupyterÏîÄ¿Á·Ï°/RFM-RFIÓÃ»§¼ÛÖµ·Ö²ãÓëROIÓÅ»¯/segment_radar.png', dpi=150, bbox_inches='tight')
+plt.show()
+plt.close()    
+#¢Ú·Ö²ã·Ö²¼Öù×´Í¼
+segment_counts = df['User_Segment'].value_counts().reset_index()
+segment_counts.columns=['User_Segment','Count']
+segment_counts['Percentage'] = (segment_counts['Count'] / len(df) * 100).round(1)
+fig, ax = plt.subplots(figsize=(12, 6))
+sns.barplot(data=segment_counts,x='Count',y='User_Segment',ax=ax,color='royalblue',alpha=0.8,edgecolor='white')
+for i,(count,pct) in enumerate(zip(segment_counts['Count'],segment_counts['Percentage'])):
+    ax.text(count+2,i,f'{count} ({pct}%',va='center',fontsize=9)
+    ax.set_xlabel('User Count',fontsize=12)
+    ax.set_ylabel('User Segment',fontsize=12)
+    ax.set_title('User Segment Distribution', fontsize=14)
+plt.tight_layout()
+plt.savefig('E:/jupyterÏîÄ¿Á·Ï°/RFM-RFIÓÃ»§¼ÛÖµ·Ö²ãÓëROIÓÅ»¯/segment_distribution.png', dpi=150, bbox_inches='tight')
+plt.show()
+plt.close()
 
-   â–² Next.js 15.5.19
-   - Local:        http://localhost:3000
-   - Network:      http://192.168.163.1:3000
-   - Environments: .env.local
 
- âœ“ Starting...
- âœ“ Ready in 13.8s
- â—‹ Compiling / ...
- âœ“ Compiled / in 29.9s (871 modules)
- GET / 200 in 231ms
- GET / 200 in 138ms
- â—‹ Compiling /text-lab ...
- âœ“ Compiled /text-lab in 1085ms (741 modules)
- GET /text-lab 200 in 1451ms
- GET / 200 in 65ms
- GET /text-lab 200 in 60ms
- â—‹ Compiling /sql-agent-lab ...
- âœ“ Compiled /sql-agent-lab in 14.4s (1950 modules)
- GET /sql-agent-lab 200 in 15784ms
- â—‹ Compiling /notes ...
- âœ“ Compiled /notes in 12.9s (2492 modules)
- GET /notes 200 in 14631ms
- GET /sql-agent-lab 200 in 101ms
- âœ“ Compiled in 2.5s (2492 modules)
- GET /sql-agent-lab 200 in 1619ms
- GET /sql-agent-lab 200 in 154ms
- GET /sql-agent-lab 200 in 152ms
- GET /text-lab 200 in 145ms
- GET / 200 in 86ms
- GET /sql-agent-lab 200 in 88ms
- GET /text-lab 200 in 64ms
- GET /sql-agent-lab 200 in 65ms
- GET /text-lab 200 in 70ms
- GET /sql-agent-lab 200 in 59ms
- âœ“ Compiled in 4s (2492 modules)
- âœ“ Compiled in 855ms (2492 modules)
- GET /sql-agent-lab 200 in 1180ms
- GET /text-lab 200 in 116ms
- âœ“ Compiled in 2.8s (2492 modules)
- âœ“ Compiled in 833ms (2492 modules)
- âœ“ Compiled in 849ms (2492 modules)
- GET /text-lab 200 in 660ms
- GET /sql-agent-lab 200 in 91ms
- GET /sql-agent-lab 200 in 718ms
- GET /sql-agent-lab 200 in 174ms
- GET /sql-agent-lab 200 in 422ms
- GET /sql-agent-lab 200 in 306ms
- GET /sql-agent-lab 200 in 189ms
- GET /sql-agent-lab 200 in 167ms
- GET /sql-agent-lab 200 in 167ms
- âœ“ Compiled in 7.5s (2492 modules)
- GET /sql-agent-lab 200 in 1229ms
- GET /sql-agent-lab 200 in 152ms
- âœ“ Compiled in 3.1s (2492 modules)
- âœ“ Compiled in 1748ms (2492 modules)
- âœ“ Compiled in 1050ms (2492 modules)
- GET /sql-agent-lab 200 in 1153ms
- GET /text-lab 200 in 105ms
- GET / 200 in 75ms
- GET /sql-agent-lab 200 in 75ms
- âœ“ Compiled in 2000ms (2492 modules)
- âœ“ Compiled in 937ms (2492 modules)
- GET /sql-agent-lab 200 in 669ms
- GET /sql-agent-lab 200 in 169ms
- âœ“ Compiled in 2.2s (2492 modules)
- âœ“ Compiled in 2.1s (2492 modules)
- GET /sql-agent-lab 200 in 1036ms
- GET /sql-agent-lab 200 in 173ms
- âœ“ Compiled in 2.2s (2492 modules)
- GET / 200 in 206ms
- GET /text-lab 200 in 72ms
- GET /sql-agent-lab 200 in 84ms
- GET /sql-agent-lab 200 in 941ms
- GET / 200 in 51ms
- GET /notes 200 in 1638ms
-^C
+
+=====CELL=====
+#£¨5.1£©½á¹ûÁ¿»¯Õ¹Ê¾
+def calculate_roi(df, output_dir):
+    """ROI²âËã£º´«Í³RFM vs ÓÅ»¯RFI²ßÂÔ¶Ô±È£¨±ß¼ÊÊÕÒæ·¨£¬²ÎÊı¿Éµ÷£©"""
+    
+    print("\n" + "=" * 50)
+    print("µÚÁù½×¶Î£ºROI²âËã")
+    print("=" * 50)
+    
+    # ================= ¿Éµ÷Õû²ÎÊı=================
+    total_budget = 10000          # ×ÜÔ¤Ëã£¨Ôª£©
+    coupon_cost = 10               # Ã¿ÕÅÓÅ»İÈ¯³É±¾£¨Ôª£©
+    aov = df['Average_Order_Value'].mean()  # Æ½¾ù¿Íµ¥¼Û£¨Ôª£©
+    
+    # ×ª»¯ÂÊ¼ÙÉè
+    # ºËĞÄÓÃ»§
+    core_natural = 0.25            # ºËĞÄÓÃ»§ÎŞÈ¯×ÔÈ»×ª»¯ÂÊ
+    core_with_coupon = 0.30        # ºËĞÄÓÃ»§·¢È¯ºó×ª»¯ÂÊ
+    # Ç±Á¦ÓÃ»§
+    potential_natural = 0.01       # Ç±Á¦ÓÃ»§×ÔÈ»×ª»¯ÂÊ
+    potential_with_coupon = 0.20   # Ç±Á¦ÓÃ»§·¢È¯ºó×ª»¯ÂÊ£¨¿Éµ÷¸ßÖÁ20%-25%£©
+    # Ò»°ãÓÃ»§£¨ÓÃÓÚ·½°¸AµÄ»ùÏß£©
+    general_natural = 0.02          # Ò»°ãÓÃ»§×ÔÈ»×ª»¯ÂÊ
+    # RFMÇ°20%ÓÃ»§µÄ×ÔÈ»×ª»¯ÂÊ£¨½éÓÚºËĞÄºÍÒ»°ãÖ®¼ä£©
+    rfm20_natural = 0.20            # ¿É¸ù¾İÊµ¼ÊÊı¾İµ÷Õû£¬ÀıÈç£ºRFM¸ß·ÖÓÃ»§Í¨³£×ª»¯ÂÊ½Ï¸ß
+    rfm20_with_coupon = 0.30        # ·¢È¯ºó×ª»¯ÂÊ£¨Í¨³£²»»á³¬¹ıºËĞÄÓÃ»§£©
+    
+    # ±ß¼ÊÌáÉıÔöÁ¿Ë¼Î¬·¢È¯ºó×ª»¯ÂÊ-×ÔÈ»×ª»¯ÂÊ
+    core_lift = core_with_coupon - core_natural
+    potential_lift = potential_with_coupon - potential_natural
+    rfm20_lift = rfm20_with_coupon - rfm20_natural
+    #ÔöÁ¿ÊÕÒæ = Ä¿±êÓÃ»§Êı ¡Á ±ß¼ÊÌáÉı ¡Á ¿Íµ¥¼Û£¨AOV£©
+    #ROI = (ÔöÁ¿ÊÕÒæ - ³É±¾) / ³É±¾ ¡Á 100%£¨³É±¾ = ÓÃ»§Êı ¡Á µ¥ÕÅÓÅ»İÈ¯³É±¾£©
+    # ================= ·½°¸A£º´«Í³RFM²ßÂÔ =================
+    top20_threshold = df['RFM_Score'].quantile(0.80)
+    rfm_top20 = df[df['RFM_Score'] >= top20_threshold]
+    target_a_count = min(len(rfm_top20), total_budget // coupon_cost)#Ô¤ËãÔ¼Êø¼È²»³¬¹ı¸ß¼ÛÖµÓÃ»§×ÜÊı£¬Ò²²»³¬Ô¤ËãÉÏÏŞ
+    cost_a = target_a_count * coupon_cost
+    incremental_revenue_a = target_a_count * rfm20_lift * aov
+    roi_a = (incremental_revenue_a - cost_a) / cost_a * 100 if cost_a > 0 else 0
+    
+    # ================= ·½°¸B£ºÓÅ»¯RFI²ßÂÔ =================
+    core_users = df[df['User_Segment'].isin(['Core VIP Users', 'Important Value Users'])]
+    potential_users = df[df['User_Segment'].isin(['High-Spending Hesitant Users', 'High-Potential Sleeping Users', 'Potential Hesitant Users', 'High-Potential At-Risk Users'])]
+    
+    # ·ÖÅäÔ¤Ëã£ºÓÅÏÈºËĞÄÓÃ»§£¨ÓÃ80%Ô¤Ëã£©£¬Ê£Óà¸øÇ±Á¦ÓÃ»§
+    core_count = min(len(core_users), int(total_budget * 0.8 / coupon_cost))
+    remaining_budget = total_budget - core_count * coupon_cost
+    potential_count = min(len(potential_users), remaining_budget // coupon_cost)
+    target_b_count = core_count + potential_count
+    cost_b = target_b_count * coupon_cost
+    incremental_revenue_b = core_count * core_lift * aov + potential_count * potential_lift * aov
+    roi_b = (incremental_revenue_b - cost_b) / cost_b * 100 if cost_b > 0 else 0
+    
+    # ================= Êä³ö½á¹û =================
+    print(f"\n¡¾¼ÙÉè²ÎÊı¡¿")
+    print(f"  ×ÜÔ¤Ëã: {total_budget}Ôª")
+    print(f"  ÓÅ»İÈ¯³É±¾: {coupon_cost}Ôª/ÈË")
+    print(f"  Æ½¾ù¿Íµ¥¼Û: {aov:.0f}Ôª")
+    
+    print(f"\n¡¾×ª»¯ÂÊ¼ÙÉè¡¿")
+    print(f"  RFMÇ°20%ÓÃ»§£º×ÔÈ»×ª»¯ÂÊ {rfm20_natural*100:.1f}%£¬·¢È¯ºó {rfm20_with_coupon*100:.1f}%£¬±ß¼ÊÌáÉı {rfm20_lift*100:.1f}%")
+    print(f"  ºËĞÄÓÃ»§£º×ÔÈ»×ª»¯ÂÊ {core_natural*100:.1f}%£¬·¢È¯ºó {core_with_coupon*100:.1f}%£¬±ß¼ÊÌáÉı {core_lift*100:.1f}%")
+    print(f"  Ç±Á¦ÓÃ»§£º×ÔÈ»×ª»¯ÂÊ {potential_natural*100:.1f}%£¬·¢È¯ºó {potential_with_coupon*100:.1f}%£¬±ß¼ÊÌáÉı {potential_lift*100:.1f}%")
+    
+    print(f"\n¡¾·½°¸A - ´«Í³RFM²ßÂÔ¡¿")
+    print(f"  Ä¿±êÓÃ»§Êı: {target_a_count}")
+    print(f"  ³É±¾: {cost_a}Ôª")
+    print(f"  ±ß¼ÊÊÕÒæ£¨ÔöÁ¿£©: {incremental_revenue_a:.0f}Ôª")
+    print(f"  ±ß¼ÊROI: {roi_a:.1f}%")
+    
+    print(f"\n¡¾·½°¸B - ÓÅ»¯RFI²ßÂÔ¡¿")
+    print(f"  ºËĞÄÓÃ»§: {core_count}")
+    print(f"  ĞÂÍÚ¾òÇ±Á¦ÓÃ»§: {potential_count}")
+    print(f"  ×ÜÄ¿±êÓÃ»§Êı: {target_b_count}")
+    print(f"  Êµ¼Ê³É±¾: {cost_b}Ôª (Ô¤ËãÊ¹ÓÃÂÊ: {cost_b/total_budget*100:.1f}%)")
+    print(f"  ±ß¼ÊÊÕÒæ£¨ÔöÁ¿£©: {incremental_revenue_b:.0f}Ôª")
+    print(f"  ±ß¼ÊROI: {roi_b:.1f}%")
+    
+    # ROI¶Ô±È¿ÉÊÓ»¯
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    # ===== ×ÓÍ¼1£º±ß¼ÊROI¶Ô±È£¨Öù×´Í¼£©=====
+    # ×¼±¸Êı¾İ
+    roi_data={'Strategy':['Traditional RFM', 'Optimized RFI'],'Marginal_ROI':[roi_a, roi_b]}
+    sns.barplot(data=roi_data,x='Strategy',y='Marginal_ROI',hue='Strategy',ax=axes[0],palette=['red','blue'],legend=False)
+    axes[0].set_ylabel('Marginal ROI (%)')#±ß¼ÊROI (%)
+    axes[0].set_title('Marginal ROI Comparison: Traditional RFM vs Optimized RFI', fontsize=12)#±ß¼ÊROI¶Ô±È£º´«Í³RFM vs ÓÅ»¯RFI
+    for i, roi in enumerate([roi_a,roi_b]):
+        axes[0].text(i, roi + 5, f'{roi:.1f}%', ha='center', fontsize=12, fontweight='bold')
+    
+    # ===== ×ÓÍ¼2£º±ß¼ÊÊÕÒæ¹¹³É¶Ô±È£¨¶ÑµşÖù×´Í¼£©=====
+    # ×¼±¸¶ÑµşÊı¾İ
+    stack_data = {
+        'Strategy': ['Traditional RFM', 'Optimized RFI', 'Traditional RFM', 'Optimized RFI'],
+        'Revenue_Type': ['Core Users', 'Core Users', 'Potential Users', 'Potential Users'],
+        'Marginal_Revenue': [
+            incremental_revenue_a, core_count * core_lift * aov,
+            0, potential_count * potential_lift * aov
+        ]
+    }
+    sns.barplot(data=stack_data,x='Strategy',y='Marginal_Revenue',hue='Revenue_Type',ax=axes[1],palette=['blue','teal'])
+    axes[1].set_ylabel('Marginal Revenue (CNY)')#±ß¼ÊÊÕÒæ (Ôª)
+    axes[1].set_title('Comparison of Marginal Revenue Composition', fontsize=12)#±ß¼ÊÊÕÒæ¹¹³É¶Ô±È
+    axes[1].legend(title='Revenue Type')
+    
+    plt.tight_layout()
+    plt.savefig(f'{output_dir}/roi_comparison.png', dpi=150, bbox_inches='tight')
+    plt.show()
+    plt.close()
+    
+    return {
+        'strategy_a': {
+            'target_count': int(target_a_count),
+            'cost': cost_a,
+            'incremental_revenue': incremental_revenue_a,
+            'marginal_roi': roi_a
+        },
+        'strategy_b': {
+            'core_count': int(core_count),
+            'potential_count': int(potential_count),
+            'total_count': int(target_b_count),
+            'actual_cost': cost_b,
+            'budget_used_ratio': cost_b/total_budget,
+            'incremental_revenue': incremental_revenue_b,
+            'marginal_roi': roi_b
+        },
+        'params': {
+            'budget': total_budget,
+            'coupon_cost': coupon_cost,
+            'aov': aov,
+            'rfm20_lift': rfm20_lift,
+            'core_lift': core_lift,
+            'potential_lift': potential_lift
+        }
+    }
+roi_results = calculate_roi(df, "E:/jupyterÏîÄ¿Á·Ï°/RFM-RFIÓÃ»§¼ÛÖµ·Ö²ãÓëROIÓÅ»¯")
+
