@@ -16,6 +16,9 @@ import "../css/review.css";
 import "../css/notes.css";
 import "../css/responsive.css";
 import "highlight.js/styles/github.css";
+// 笔记里的 LaTeX 公式在构建期由 rehype-katex 转成 HTML，浏览器这边只需要它的样式和字体。
+// 字体文件（woff2）由 Next 打包进 /_next/static/media/，静态导出后也能正常加载。
+import "katex/dist/katex.min.css";
 import Nav from "../components/Nav.jsx";
 
 export const metadata = {
