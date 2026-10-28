@@ -376,4 +376,17 @@
     display: block;
     overflow-x: auto;
   }
+  /* 公式在手机上不撑破页面：块级公式内部横向滚动，行内公式允许断行 */
+  .notes-body .katex-display {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .notes-body .katex {
+    max-width: 100%;
+    white-space: normal;
+    word-break: break-word;
+  }
 }

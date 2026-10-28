@@ -10,7 +10,7 @@
 //   3. 主区 → 用 dangerouslySetInnerHTML 渲染预生成的 HTML。
 // 内容是自己维护的静态笔记、无运行时输入注入，这个用法是安全的。
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageHeading from "./PageHeading.jsx";
 
 // 把扁平的 headings（每个带 depth）转成树：标题是"最近一个层级更浅的标题"的子节点。
@@ -118,11 +118,13 @@ export default function NotesView({ notes }) {
   const q = query.trim().toLowerCase();
   const searchResults = q ? buildSearchResults(notes, q) : null;
 
-  // 每篇笔记的大纲树（只在未搜索时用）。
-  const trees = notes.reduce((acc, n) => {
-    acc[n.id] = buildTree(n.headings);
-    return acc;
-  }, {});
+  // 每篇笔记的大纲树（只在未搜索时用）。用 useMemo 缓存，避免每次渲染/切换都全量重算。
+  const trees = useMemo(() => {
+    return notes.reduce((acc, n) => {
+      acc[n.id] = buildTree(n.headings);
+      return acc;
+    }, {});
+  }, [notes]);
 
   // 点了大纲里的标题后：先切到那篇笔记，等 React 渲染出正文，再滚动到对应 id。
   useEffect(() => {
