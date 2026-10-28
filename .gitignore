@@ -30,7 +30,7 @@ upload_data.py
 check_server.py
 read_pdf.py
 create_resume.py
-sync_form_server.py
+sync_from_server.py
 gen_qr.py
 resume_content.txt
 template_content.txt
